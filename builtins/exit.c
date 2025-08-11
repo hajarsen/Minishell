@@ -44,7 +44,7 @@ void ft_exit(char **args)
         if (args[2])
         {
             exit_arg_error();
-            exit(2); /* Exit with code 2 for too many arguments, instead of just setting status */
+            exit(1); 
         }
         exit_code = my_ft_atoll(args[1], &overflow);
         if (overflow)
