@@ -18,12 +18,14 @@ static void extract_exit_status(int status, int *exit_status)
 
 static void execute_left_side(t_tokenizer *left_tokens, t_glb *glb, int fd[2], int *exit_status)
 {
-    char **args = tokens_to_args(left_tokens);
+	if (execute_redirections(left_tokens))
+		exit(1);
 
     close(fd[READING_END]);
     dup2(fd[WRITING_END], STDOUT_FILENO);
     close(fd[WRITING_END]);
 
+	char **args = tokens_to_args(left_tokens);
     if (args && args[0])
     {
         if (is_builtin(args[0]))
@@ -47,12 +49,13 @@ static void execute_left_side(t_tokenizer *left_tokens, t_glb *glb, int fd[2], i
 
 static void execute_right_side(t_tokenizer *right_tokens, t_glb *glb, int fd[2], int *exit_status)
 {
-    char **args = tokens_to_args(right_tokens);
+	if (execute_redirections(right_tokens))
+        exit(1);
 
     close(fd[WRITING_END]);
     dup2(fd[READING_END], STDIN_FILENO);
     close(fd[READING_END]);
-
+	char **args = tokens_to_args(right_tokens);
     if (args && args[0])
     {
         if (is_builtin(args[0]))
