@@ -109,7 +109,7 @@ int ft_cd(char **args, t_env **env_list)
     if (args[2])
     {
         ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
-        return 2; /* Change exit code to 2 to match bash behavior */
+        return 1; 
     }
     return cd_with_arg(env_list, args[1]);
 }
