@@ -68,12 +68,13 @@ int main(int ac, char **av, char **env)
 	while (1)
 	{
 		input = readline("\033[1;32m➜\033[0m\033[1;36m Minishell $> \033[0m");
-		if (!input)
+        if (!input)
         {
             printf("exit\n");
             free_env(glb_list()->env);
             rl_clear_history();
-			exit(1);
+            /* Exit with last command's status instead of hardcoded 1 */
+			exit(glb_list()->exit_status);
         }
 		if (ft_strlen(input) == 0)
         {
@@ -163,21 +164,30 @@ int main(int ac, char **av, char **env)
 					}
 
 					execve(path, args, envp);
-					ft_putstr_fd("minishell: ", 2);
-					ft_putstr_fd(path, 2);
-					ft_putstr_fd(": No such file or directory\n", 2);
-					free(path);
-					free_strs(envp);
-					exit(127);
+					{
+						int saved_errno = errno;
+						ft_putstr_fd("minishell: ", 2);
+						ft_putstr_fd(args[0], 2);
+						ft_putstr_fd(": ", 2);
+						ft_putendl_fd(strerror(saved_errno), 2);
+						free(path);
+						free_strs(envp);
+						if (saved_errno == ENOENT)
+							exit(127);
+						else if (saved_errno == EACCES || saved_errno == ENOTDIR || saved_errno == EISDIR || saved_errno == ENOEXEC)
+							exit(126);
+						else
+							exit(126);
+					}
 				}
 				else if (pid > 0)
-                {
-                    waitpid(pid, &exit_status, 0);
-                    if (WIFEXITED(exit_status))
-                        glb_list()->exit_status = WEXITSTATUS(exit_status);
-                    else if (WIFSIGNALED(exit_status))
-                        glb_list()->exit_status = 128 + WTERMSIG(exit_status);
-                }
+				{
+					waitpid(pid, &exit_status, 0);
+					if (WIFEXITED(exit_status))
+						glb_list()->exit_status = WEXITSTATUS(exit_status);
+					else if (WIFSIGNALED(exit_status))
+						glb_list()->exit_status = 128 + WTERMSIG(exit_status);
+				}
                 else
                 {
                     perror("fork");
