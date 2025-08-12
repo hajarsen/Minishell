@@ -1,5 +1,31 @@
 #include "minishell.h"
 
+static int	str_has_quote(const char *s)
+{
+    int i = 0;
+    while (s && s[i])
+    {
+        if (s[i] == '\'' || s[i] == '"')
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
+static int	prev_is_heredoc(t_tokenizer *head, t_tokenizer *node)
+{
+    t_tokenizer *it = head;
+    if (!head || !node)
+        return (0);
+    while (it && it->next)
+    {
+        if (it->next == node)
+            return (it->op == LESS_LESS);
+        it = it->next;
+    }
+    return (0);
+}
+
 void	remove_quote(char *str, int start, int end)
 {
 	int	i;
@@ -93,6 +119,9 @@ void	expanding(t_tokenizer **token)
 			(*temp)->hd = NULL;
 		if ((*temp)->op == NOT_OP)
 		{
+			/* Mark heredoc delimiter quoting (before we strip quotes) */
+			if (prev_is_heredoc(*token, *temp))
+				(*temp)->redirect.qt = str_has_quote((*temp)->str) ? THERES_QUOTE : NO_QUOTE;
 			// printf("hada :%s\n",(*temp)->str);
 			temp = env_var(temp);
     		// print_tokenizer(*token);
