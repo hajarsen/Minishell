@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals_setup.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsennane <hsennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/12 05:17:15 by hsennane          #+#    #+#             */
+/*   Updated: 2025/08/12 05:17:17 by hsennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	setup_signal_action(int signum, void (*handler)(int), int flags)
@@ -18,12 +30,9 @@ void	setup_signals(void)
 
 void	set_signal_handler(t_tokenizer *token)
 {
-	/* Only specialize for heredoc; otherwise keep whatever is configured */
 	if (token && token->op == LESS_LESS)
 	{
-		/* Parent is not in readline; use minimal handler */
 		setup_signal_action(SIGINT, signal_handler_heredoc, 0);
 		setup_signal_action(SIGQUIT, signal_handler_heredoc, 0);
 	}
 }
-
