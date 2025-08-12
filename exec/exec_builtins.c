@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_builtins.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsennane <hsennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/12 05:15:53 by hsennane          #+#    #+#             */
+/*   Updated: 2025/08/12 05:15:54 by hsennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-
-int is_builtin(const char *cmd)
+int	is_builtin(const char *cmd)
 {
 	if (!cmd)
 		return (0);
@@ -21,7 +32,8 @@ int is_builtin(const char *cmd)
 		return (1);
 	return (0);
 }
-int execute_builtin(char **args, t_env **env_list, int *exit_status)
+
+int	execute_builtin(char **args, t_env **env_list, int *exit_status)
 {
 	if (!args || !args[0])
 		return (0);
