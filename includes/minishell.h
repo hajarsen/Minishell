@@ -164,10 +164,16 @@ int		input_error(char *input);
 int		check_parsing_errors(t_tokenizer *token);
 /*BUILTINS*/
 int open_heredoc_and_write_pipe(t_tokenizer *token, t_env *env, int *exit_status);
+int	process_heredoc_line(t_tokenizer *token, t_env *env, int write_fd, char *line);
+int	write_line_to_pipe(int write_fd, char *line);
+int	is_name_char(int c);
+void	setup_heredoc_signals(void);
 int	redirection_infos(t_tokenizer *tokens);
 int execute_redirections(t_tokenizer *tokens);
 void	close_redirection_fds(t_tokenizer *token);
 void	init_redirect_fds(t_tokenizer *tokens);
+int	open_redirection_file(t_tokenizer *token, t_env *env);
+int	handle_redirection_error(t_tokenizer *token, t_tokenizer *start);
 /* HEREDOC EXPANSION */
 int     heredoc_delimiter_is_quoted(t_tokenizer *delim_tok);
 char    *expand_heredoc_line(const char *line, t_env *env);
