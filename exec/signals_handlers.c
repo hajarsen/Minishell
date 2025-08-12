@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals_handlers.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsennane <hsennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/12 05:17:22 by hsennane          #+#    #+#             */
+/*   Updated: 2025/08/12 05:17:24 by hsennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	signal_handler_general(int signum)
@@ -5,7 +17,6 @@ void	signal_handler_general(int signum)
 	if (signum == SIGINT)
 	{
 		ft_putstr_fd("\n", STDOUT_FILENO);
-		/* Safe to use readline helpers only at the interactive prompt */
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
@@ -22,16 +33,13 @@ void	signal_handler_input(int signum)
 	}
 	else if (signum == SIGQUIT)
 	{
-		/* Ignore visual noise while parent waits */
-		/* Do not print "Quit (core dumped)" in the shell itself */
 	}
 }
 
 static void	handle_heredoc_sigint(void)
 {
-    /* Parent side during heredoc: print newline and mark status only */
-    write(STDOUT_FILENO, "\n", 1);
-    glb_list()->exit_status = 130;
+	write(STDOUT_FILENO, "\n", 1);
+	glb_list()->exit_status = 130;
 }
 
 static void	handle_heredoc_sigquit(void)
