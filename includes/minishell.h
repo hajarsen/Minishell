@@ -191,6 +191,7 @@ long long my_ft_atoll(const char *str, int *overflow);
 int 	ft_env(char **args, t_env *env_list);
 int 	ft_cd(char **args, t_env **env_list);
 void	print_cd_error(const char *path);
+char	*get_env_value_or_default(t_env *env_list, const char *name, const char *default_val);
 int 	ft_export(char **args, t_env **env_list);
 void	print_exported_vars(t_env *env);
 int 	is_builtin(const char *cmd);
@@ -216,5 +217,9 @@ int     has_pipe(t_tokenizer *tokens);
 
 void execute_pipeline(t_tokenizer *tokens, t_glb *glb, int *exit_status);
 void save_exit_status(t_glb *glb, int status_code);
-
+void	close_all_pipes(int (*pfds)[2], int n);
+void	collect_segments(t_tokenizer *tokens, t_tokenizer **starts, t_tokenizer **ends, int n);
+int	count_segments(t_tokenizer *tokens);
+void	extract_exit_status(int status, int *exit_status);
+void	ignore_interactive_signals(void);
 #endif
