@@ -1,118 +1,118 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsennane <hsennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/12 05:16:21 by hsennane          #+#    #+#             */
+/*   Updated: 2025/08/12 05:16:22 by hsennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-
-int open_heredoc_and_write_pipe(t_tokenizer *token, t_env *env, int *exit_status)
+static int	read_and_write_heredoc(t_tokenizer *token, t_env *env, int write_fd)
 {
-    int     pipefd[2];
-    pid_t   pid;
-    int     status;
+	char	*line;
+	int		status;
 
-    (void)exit_status;
-
-    if (pipe(pipefd) == -1)
-    {
-        perror("pipe");
-        return -1;
-    }
-
-    /* Clear any previous termination state */
-    glb_list()->termination_status = 0;
-
-    pid = fork();
-    if (pid < 0)
-    {
-        perror("fork");
-        close(pipefd[0]);
-        close(pipefd[1]);
-        return -1;
-    }
-    if (pid == 0)
-    {
-        /* Child: perform heredoc reading, write to pipe */
-        struct sigaction act;
-        /* In heredoc child: SIGINT should terminate; SIGQUIT ignored like bash */
-        sigemptyset(&act.sa_mask);
-        act.sa_handler = SIG_DFL;
-        act.sa_flags = 0;
-        sigaction(SIGINT, &act, NULL);
-        act.sa_handler = SIG_IGN;
-        sigaction(SIGQUIT, &act, NULL);
-
-        close(pipefd[0]); /* Close read end in child */
-
-        while (1)
-        {
-            char *line = readline("> ");
-            if (!line)
-            {
-                /* EOF (Ctrl-D): warn and finish heredoc */
-                ft_putstr_fd("minishell: warning: here-document delimited by end-of-file (wanted `", 2);
-                ft_putstr_fd(token->str, 2);
-                ft_putstr_fd("')\n", 2);
-                break;
-            }
-            if (ft_strcmp(line, token->str) == 0)
-            {
-                free(line);
-                break;
-            }
-            if (!heredoc_delimiter_is_quoted(token))
-            {
-                char *expanded = expand_heredoc_line(line, env);
-                free(line);
-                line = expanded;
-            }
-            if (write(pipefd[1], line, ft_strlen(line)) == -1
-                || write(pipefd[1], "\n", 1) == -1)
-            {
-                perror("write");
-                free(line);
-                close(pipefd[1]);
-                _exit(1);
-            }
-            free(line);
-        }
-
-        close(pipefd[1]);
-        _exit(0);
-    }
-
-    /* Parent: close write-end and wait; child will die on SIGINT */
-    close(pipefd[1]); /* Parent reads from pipe */
-
-    /* Wait for heredoc child to finish; handle interruptions */
-    (void)waitpid(pid, &status, 0);
-
-    if (WIFSIGNALED(status))
-    {
-        int sig = WTERMSIG(status);
-        if (sig == SIGINT)
-        {
-            glb_list()->exit_status = 130;
-            close(pipefd[0]);
-            errno = EINTR;
-            return -1;
-        }
-    }
-    else if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-    {
-        /* Child indicated error while writing */
-        close(pipefd[0]);
-        return -1;
-    }
-
-    return pipefd[0];
+	line = NULL;
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+			break ;
+		status = process_heredoc_line(token, env, write_fd, line);
+		if (status == 1)
+			return (0);
+		if (status == -1)
+			return (-1);
+	}
+	if (!line)
+	{
+		ft_putstr_fd("minishell: warning: here-document
+			delimited by end-of-file (wanted `", 2);
+		ft_putstr_fd(token->str, 2);
+		ft_putstr_fd("')\n", 2);
+	}
+	return (0);
 }
 
+static int	handle_fork_and_child(t_tokenizer *token, t_env *env, int *pipefd)
+{
+	int	ret;
 
-void process_heredocs(t_tokenizer *tokens, t_env *env, int *exit_status) {
-    while (tokens) {
-        if (tokens->op == LESS_LESS) {
-            tokens = tokens->next;
-            if (tokens)
-                tokens->redirect.file_fd = open_heredoc_and_write_pipe(tokens, env, exit_status);
-        }
-        if (tokens)
-            tokens = tokens->next;
-    }
+	setup_heredoc_signals();
+	close(pipefd[0]);
+	ret = read_and_write_heredoc(token, env, pipefd[1]);
+	close(pipefd[1]);
+	if (ret == -1)
+		_exit(1);
+	_exit(0);
+}
+
+static int	handle_parent_process(pid_t pid, int *pipefd)
+{
+	int	status;
+
+	close(pipefd[1]);
+	(void)waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	{
+		glb_list()->exit_status = 130;
+		close(pipefd[0]);
+		return (-1);
+	}
+	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+	{
+		close(pipefd[0]);
+		return (-1);
+	}
+	return (pipefd[0]);
+}
+
+int	open_heredoc_and_write_pipe(t_tokenizer *token,
+	t_env *env, int *exit_status)
+{
+	int		pipefd[2];
+	pid_t	pid;
+
+	(void)exit_status;
+	if (pipe(pipefd) == -1)
+	{
+		ft_putstr_fd("minishell: pipe error\n", 2);
+		return (-1);
+	}
+	glb_list()->termination_status = 0;
+	pid = fork();
+	if (pid < 0)
+	{
+		ft_putstr_fd("minishell: fork error\n", 2);
+		close(pipefd[0]);
+		close(pipefd[1]);
+		return (-1);
+	}
+	if (pid == 0)
+		handle_fork_and_child(token, env, pipefd);
+	return (handle_parent_process(pid, pipefd));
+}
+
+void	process_heredocs(t_tokenizer *tokens, t_env *env, int *exit_status)
+{
+	t_tokenizer	*temp;
+
+	temp = tokens;
+	while (temp)
+	{
+		if (temp->op == LESS_LESS)
+		{
+			temp = temp->next;
+			if (temp)
+				temp->redirect.file_fd = open_heredoc_and_write_pipe(temp,
+						env, exit_status);
+		}
+		if (temp)
+			temp = temp->next;
+	}
 }
