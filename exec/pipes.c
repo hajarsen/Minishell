@@ -135,7 +135,6 @@ static void	child_exec_single(t_tokenizer *seg_head, t_glb *glb,
 {
 	char	**args;
 
-	/* In child: use default signals so SIGINT/SIGQUIT affect the process */
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	apply_redirections_or_exit(seg_head);
