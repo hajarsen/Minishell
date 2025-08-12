@@ -7,7 +7,6 @@ int open_heredoc_and_write_pipe(t_tokenizer *token, t_env *env, int *exit_status
     pid_t   pid;
     int     status;
 
-    (void)env;
     (void)exit_status;
 
     if (pipe(pipefd) == -1)
@@ -16,6 +15,7 @@ int open_heredoc_and_write_pipe(t_tokenizer *token, t_env *env, int *exit_status
         return -1;
     }
 
+    /* Clear any previous termination state */
     glb_list()->termination_status = 0;
 
     pid = fork();
@@ -28,7 +28,9 @@ int open_heredoc_and_write_pipe(t_tokenizer *token, t_env *env, int *exit_status
     }
     if (pid == 0)
     {
+        /* Child: perform heredoc reading, write to pipe */
         struct sigaction act;
+        /* In heredoc child: SIGINT should terminate; SIGQUIT ignored like bash */
         sigemptyset(&act.sa_mask);
         act.sa_handler = SIG_DFL;
         act.sa_flags = 0;
@@ -54,6 +56,12 @@ int open_heredoc_and_write_pipe(t_tokenizer *token, t_env *env, int *exit_status
                 free(line);
                 break;
             }
+            if (!heredoc_delimiter_is_quoted(token))
+            {
+                char *expanded = expand_heredoc_line(line, env);
+                free(line);
+                line = expanded;
+            }
             if (write(pipefd[1], line, ft_strlen(line)) == -1
                 || write(pipefd[1], "\n", 1) == -1)
             {
@@ -69,8 +77,10 @@ int open_heredoc_and_write_pipe(t_tokenizer *token, t_env *env, int *exit_status
         _exit(0);
     }
 
-    close(pipefd[1]);
+    /* Parent: close write-end and wait; child will die on SIGINT */
+    close(pipefd[1]); /* Parent reads from pipe */
 
+    /* Wait for heredoc child to finish; handle interruptions */
     (void)waitpid(pid, &status, 0);
 
     if (WIFSIGNALED(status))
@@ -86,6 +96,7 @@ int open_heredoc_and_write_pipe(t_tokenizer *token, t_env *env, int *exit_status
     }
     else if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
     {
+        /* Child indicated error while writing */
         close(pipefd[0]);
         return -1;
     }
