@@ -12,26 +12,16 @@
 
 #include "minishell.h"
 
-static char	*get_env_value_or_default(t_env *env_list, const char *name,
-		const char *default_val)
-{
-	char	*val;
-	char	*copy;
-
-	val = get_env_value((char *)name, env_list);
-	if (!val)
-		copy = ft_strdup(default_val);
-	else
-		copy = ft_strdup(val);
-	return (copy);
-}
-
 static int	update_oldpwd(t_env **env_list, char *old_pwd)
 {
 	t_env	*oldpwd_node;
+	char	*value;
 
-	oldpwd_node = create_env_node(ft_strdup("OLDPWD"),
-			ft_strdup(old_pwd ? old_pwd : ""));
+	if (old_pwd)
+		value = ft_strdup(old_pwd);
+	else
+		value = ft_strdup("");
+	oldpwd_node = create_env_node(ft_strdup("OLDPWD"), value);
 	if (!update_env_var(*env_list, oldpwd_node))
 	{
 		insert_env_node(env_list, oldpwd_node);
