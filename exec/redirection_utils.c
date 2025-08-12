@@ -1,19 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hsennane <hsennane@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/12 05:16:58 by hsennane          #+#    #+#             */
+/*   Updated: 2025/08/12 05:17:02 by hsennane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	init_redirect_fds(t_tokenizer *tokens)
+static int	process_redirection_token(t_tokenizer *tokens,
+	t_tokenizer *start, t_env *env)
 {
-	while (tokens)
+	int	fd;
+	int	has_error;
+
+	fd = open_redirection_file(tokens, env);
+	if (fd < 0)
 	{
-		tokens->redirect.file_fd = -1;
-		tokens->redirect.errnum = 0;
-		tokens->redirect.qt = NO_QUOTE;
-		tokens = tokens->next;
+		has_error = handle_redirection_error(tokens, start);
+		if (has_error)
+			return (has_error);
 	}
+	tokens->next->redirect.file_fd = fd;
+	return (0);
 }
 
-int		redirection_infos(t_tokenizer *tokens)
+int	redirection_infos(t_tokenizer *tokens)
 {
-	int			fd;
 	int			has_error;
 	t_tokenizer	*start;
 	t_env		*env;
@@ -24,29 +41,12 @@ int		redirection_infos(t_tokenizer *tokens)
 	while (tokens)
 	{
 		if ((tokens->op == GREAT || tokens->op == GREAT_GREAT
-			|| tokens->op == LESS || tokens->op == LESS_LESS)
+				|| tokens->op == LESS || tokens->op == LESS_LESS)
 			&& tokens->next)
 		{
-			fd = -1;
-			if (tokens->op == GREAT)
-				fd = open(tokens->next->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			else if (tokens->op == GREAT_GREAT)
-				fd = open(tokens->next->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			else if (tokens->op == LESS)
-				fd = open(tokens->next->str, O_RDONLY);
-			else if (tokens->op == LESS_LESS)
-				fd = open_heredoc_and_write_pipe(tokens->next, env, NULL);
-			if (fd < 0)
-			{
-				tokens->next->redirect.errnum = errno;
-				has_error = 1;
-				if (tokens->op != LESS_LESS)
-				{
-					close_redirection_fds(start);
-					return (1);
-				}
-			}
-			tokens->next->redirect.file_fd = fd;
+			has_error = process_redirection_token(tokens, start, env);
+			if (has_error)
+				return (has_error);
 		}
 		tokens = tokens->next;
 	}
@@ -63,18 +63,7 @@ void	close_redirection_fds(t_tokenizer *token)
 	}
 }
 
-int	here_doc_present(t_tokenizer *tokens)
-{
-	while (tokens)
-	{
-		if (tokens->op == LESS_LESS)
-			return (1);
-		tokens = tokens->next;
-	}
-	return (0);
-}
-
-int		redirections_present(t_tokenizer *tokens)
+int	redirections_present(t_tokenizer *tokens)
 {
 	while (tokens)
 	{
