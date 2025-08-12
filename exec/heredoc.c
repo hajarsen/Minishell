@@ -31,8 +31,8 @@ static int	read_and_write_heredoc(t_tokenizer *token, t_env *env, int write_fd)
 	}
 	if (!line)
 	{
-		ft_putstr_fd("minishell: warning: here-document
-			delimited by end-of-file (wanted `", 2);
+		ft_putstr_fd("minishell: warning: here-document\n", 2);
+		ft_putstr_fd("delimited by end-of-file (wanted `", 2);
 		ft_putstr_fd(token->str, 2);
 		ft_putstr_fd("')\n", 2);
 	}
