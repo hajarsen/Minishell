@@ -31,6 +31,11 @@ int	input_error(char *input)
 
 int	check_parsing_errors(t_tokenizer *token)
 {
+	if (token->op != NOT_OP && token->op != LESS_LESS)
+	{
+		printf("Minishell: syntax error near unexpectedtoken \'newline\'\n");
+		return (1);
+	}
 	while (token != NULL)
 	{
 		if (token->op != NOT_OP)
