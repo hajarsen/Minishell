@@ -20,7 +20,6 @@
 # define FALSE 2
 #define READING_END 0
 #define WRITING_END 1
-#define SHELL_CHILD_PID_FILE "/tmp/minishell_child_pid"
 
 typedef enum e_operator
 {
@@ -169,6 +168,9 @@ int	redirection_infos(t_tokenizer *tokens);
 int execute_redirections(t_tokenizer *tokens);
 void	close_redirection_fds(t_tokenizer *token);
 void	init_redirect_fds(t_tokenizer *tokens);
+/* HEREDOC EXPANSION */
+int     heredoc_delimiter_is_quoted(t_tokenizer *delim_tok);
+char    *expand_heredoc_line(const char *line, t_env *env);
 void signal_handler_general(int signum);
 void signal_handler_input(int signum);
 void signal_handler_heredoc(int signum);
