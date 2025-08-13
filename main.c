@@ -43,8 +43,30 @@ t_env	*save_env(char **env)
 			tail = new_node;
 		}
 		i++;
+    }
+    return (head);
+}
+static int check_errors(char *input)
+{
+	if (!input)
+	{
+		printf("exit\n");
+		free_env(glb_list()->env);
+		rl_clear_history();
+		exit(glb_list()->exit_status);
 	}
-	return (head);
+	if (ft_strlen(input) == 0)
+	{
+		free(input);
+		return (1);
+	}
+	if (input_error(input) == 1)
+	{
+		free(input);
+		return (1);
+	}
+	add_history(input);
+	return (0);
 }
 
 int	main(int ac, char **av, char **env)
@@ -67,24 +89,8 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		input = readline("\033[1;32m➜\033[0m\033[1;36m Minishell $> \033[0m");
-		if (!input)
-		{
-			printf("exit\n");
-			free_env(glb_list()->env);
-			rl_clear_history();
-			exit(glb_list()->exit_status);
-		}
-		if (ft_strlen(input) == 0)
-		{
-			free(input);
+		if (check_errors(input))
 			continue ;
-		}
-		if (input_error(input) == 1)
-		{
-			free(input);
-			continue ;
-		}
-		add_history(input);
 		tokens = tokenizer(input);
 		if (check_parsing_errors(tokens))
 		{
