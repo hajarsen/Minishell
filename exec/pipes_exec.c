@@ -37,12 +37,20 @@ void	perform_execve(char **args, char *path, t_env *env)
 	handle_execve_error(args, path);
 }
 
-int	has_pipe(t_tokenizer *tokens)
+int	has_pipe(t_tokenizer *tokens, char *input, int *exit_status)
 {
+	t_tokenizer	*tmp;
+
+	tmp = tokens;
 	while (tokens)
 	{
 		if (tokens->op == PIPE)
+		{
+			execute_pipeline(tmp, glb_list(), exit_status);
+			close_redirection_fds(tmp);
+			free_tokens(input, tmp);
 			return (1);
+		}
 		tokens = tokens->next;
 	}
 	return (0);

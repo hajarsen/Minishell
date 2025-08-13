@@ -116,6 +116,7 @@ typedef struct s_env
 
 typedef struct s_glb
 {
+	char			*input;
 	t_ast			*ast;
 	t_env			*env;
 	t_tokenizer		*tokens;
@@ -153,6 +154,7 @@ void		gc_free_all(void);
 void		free_tokens(char *input, t_tokenizer *tokens);
 void		free_env(t_env *env);
 t_env		*save_env(char **env);
+int			check_input_errors(char *input);
 
 /* TOKENIZER */
 
@@ -165,7 +167,7 @@ void		expanding(t_tokenizer **token);
 char		is_quote(char c);
 void		remove_quote(char *str, int start, int end);
 int			quote_handling(t_tokenizer *token);
-
+t_env		*save_env(char **env);
 /*EXPANDING*/
 t_here_doc	*here_doc(t_tokenizer *token);
 t_tokenizer	**env_var(t_tokenizer **token);
@@ -181,8 +183,15 @@ t_ast		*ast_builder(t_tokenizer *token);
 
 /* ERRORS */
 int			input_error(char *input);
-int			check_parsing_errors(t_tokenizer *token);
+int			check_parsing_errors(t_tokenizer *token, char *input);
+void		handle_execve_error_for_main(char *cmd_name,
+				char *path, char **envp);
+void		handle_directory_error(char *cmd_name, char *path);
+void		handle_command_not_found(char *arg, char *path);
 /*BUILTINS*/
+void		handle_parent_process_main(pid_t pid, int *exit_status);
+void		execute_child_process(char **args, t_tokenizer *tokens);
+int			exec_nonfork_builtin(char **args, int *exit_status);
 int			open_heredoc_and_write_pipe(t_tokenizer *token,
 				t_env *env, int *exit_status);
 int			process_heredoc_line(t_tokenizer *token,
@@ -237,7 +246,7 @@ int			update_env_var(t_env *env_list, t_env *new_node);
 void		update_shell_lvl(t_env **env_list);
 char		**envp_to_env_vector(t_env *env_list);
 char		**envlist_to_array(t_env *env_list);
-int			has_pipe(t_tokenizer *tokens);
+int			has_pipe(t_tokenizer *tokens, char *input, int *exit_status);
 void		cleanup_pipes(int (*pfds)[2], int count);
 void		cleanup_pipeline(t_pipe_data *pipe_data, int *last_status);
 void		execute_pipeline(t_tokenizer *tokens, t_glb *glb, int *exit_status);
