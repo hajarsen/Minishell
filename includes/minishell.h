@@ -148,6 +148,7 @@ char	is_quote(char c);
 
 /*EXPANDING*/
 char		*check_env(char *str);
+t_tokenizer	**env_var(t_tokenizer **token);
 char		*re_alloc(char *str, int *start, int len, char  *env_value);
 t_here_doc	*here_doc(t_tokenizer *token);
 int		expand_nq(t_tokenizer **token, int *i);

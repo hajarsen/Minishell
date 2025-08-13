@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expanding_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sel-jari <marvin@42.ma>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/13 01:34:07 by sel-jari          #+#    #+#             */
+/*   Updated: 2025/08/13 01:34:09 by sel-jari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*check_env(char *str)
@@ -6,12 +18,10 @@ char	*check_env(char *str)
 	char	*exit_str;
 	char	*temp_itoa;
 
-	// Handle special case $?
 	if (ft_strncmp(str, "?", 2) == 0)
 	{
 		free(str);
 		temp_itoa = ft_itoa(glb_list()->exit_status);
-		// Copy to garbage collected memory
 		exit_str = gc_alloc(ft_strlen(temp_itoa) + 1);
 		ft_strlcpy(exit_str, temp_itoa, ft_strlen(temp_itoa) + 1);
 		free(temp_itoa);
@@ -53,16 +63,15 @@ char	*re_alloc(char *str, int *start, int len, char *env_value)
 
 	if (env_value == NULL)
 	{
-		/* Remove the variable reference completely */
-		ft_memmove(str + *start, str + *start + len, ft_strlen(str + *start + len) + 1);
+		ft_memmove(str + *start, str + *start + len,
+			ft_strlen(str + *start + len) + 1);
 		*start -= 1;
 		return (str);
 	}
-	/* If empty string, retain it properly */
 	if (env_value[0] == '\0')
 	{
-		/* Handle empty environment variable value */
-		ft_memmove(str + *start, str + *start + len, ft_strlen(str + *start + len) + 1);
+		ft_memmove(str + *start, str + *start + len,
+			ft_strlen(str + *start + len) + 1);
 		*start -= 1;
 		return (str);
 	}
@@ -101,17 +110,13 @@ void	tokenize_the_envar(t_tokenizer **token)
 	t_tokenizer	*token_dele;
 	char		*str;
 
-	
 	token_dele = *token;
 	str = (*token)->str;
 	token_next = (*token)->next;
 	*token = tokenizer_for_expanding((*token)->str);
-	printf("this is pointer token : %p and %ld and %s\n",*token ,malloc_usable_size(*token), (*token)->str);
-	printf("this is second point :%p and %ld and %s\n",token_dele, malloc_usable_size(token_dele), (token_dele)->str);
 	free(str);
 	free(token_dele);
 	token_temp = token;
-	printf("this is second point :%p and %ld and %s\n",token_temp, malloc_usable_size(*token_temp), (*token_temp)->str);
 	while ((*token_temp) != NULL)
 	{
 		token_temp = &(*token_temp)->next;

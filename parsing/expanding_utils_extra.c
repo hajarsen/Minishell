@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expanding_utils_extra.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sel-jari <marvin@42.ma>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/13 01:34:10 by sel-jari          #+#    #+#             */
+/*   Updated: 2025/08/13 01:34:12 by sel-jari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	*count_quotes(char *str)
@@ -32,7 +44,6 @@ int	valid_expanding(char *str, int *len)
 	int			i;
 
 	i = 1;
-	// Handle special case $?
 	if (str[1] == '?')
 	{
 		*len = 2;
@@ -50,32 +61,6 @@ int	valid_expanding(char *str, int *len)
 	*len = i;
 	return (1);
 }
-
-// static char	*word_splitting(char *env_value)
-// {
-// 	char	*fixed_env_value;
-// 	int		i;
-// 	int		j;
-
-// 	fixed_env_value = malloc(ft_strlen(env_value));
-// 	i = 0;
-// 	j = 0;
-// 	while (env_value[i])
-// 	{
-// 		while(ft_isspace(env_value[i]))
-// 			i++;
-// 		if (j != 0 && env_value[i] != 0)
-// 			fixed_env_value[j++] = ' ';
-// 		while (!ft_isspace(env_value[i]) && env_value[i] != 0)
-// 		{
-// 			fixed_env_value[j] = env_value[i];
-// 			j++;
-// 			i++;
-// 		}
-// 	}
-// 	fixed_env_value[j] = 0;
-// 	return (fixed_env_value);
-// }
 
 static void	expand_dq(t_tokenizer *token, int *i)
 {
@@ -128,17 +113,11 @@ void	save_index(t_tokenizer *token)
 			while (token->str[i] != c)
 			{
 				if (c == '\"')
-				{
 					expand_dq(token, &i);
-				}
 				i++;
 			}
 			token->quotes_index[qi++] = i;
 		}
 		i++;
 	}
-	// printf("this is pointer token : %p and %ld and %s\n",token ,malloc_usable_size(token->quotes_index), (token)->str);
-	// for(int k = 0 ; k < 4 && token->quotes_index; k++)
-	// 	printf("token---->  %d\n", token->quotes_index[k]);
-	// printf("here s : %s", token->str);// 
 }
