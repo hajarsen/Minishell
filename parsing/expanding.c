@@ -62,10 +62,27 @@ void	remove_quote(char *str, int start, int end)
 	str[ft_strlen(str) - 2] = 0;
 }
 
+static int	quote_handling_and_free(t_tokenizer **temp)
+{
+	t_tokenizer	*to_remove;
+
+	if ((*temp)->op == NOT_OP)
+		quote_handling((*temp));
+	if ((*temp) != NULL && (*temp)->op == NOT_OP
+		&& (*temp)->str != NULL && (*temp)->str[0] == '\0')
+	{
+		to_remove = *temp;
+		*temp = (*temp)->next;
+		free(to_remove->str);
+		free(to_remove);
+		return (1);
+	}
+	return (0);
+}
+
 void	expanding(t_tokenizer **token)
 {
 	t_tokenizer	**temp;
-	t_tokenizer	*to_remove;
 
 	temp = token;
 	while ((*temp) != NULL)
@@ -75,20 +92,16 @@ void	expanding(t_tokenizer **token)
 		if ((*temp)->op == NOT_OP)
 		{
 			if (prev_is_heredoc(*token, *temp))
-				(*temp)->redirect.qt = str_has_quote((*temp)->str) ? THERES_QUOTE : NO_QUOTE;
+			{
+				if (str_has_quote((*temp)->str))
+					(*temp)->redirect.qt = THERES_QUOTE;
+				else
+					(*temp)->redirect.qt = NO_QUOTE;
+			}
 			temp = env_var(temp);
 		}
-		if ((*temp)->op == NOT_OP)
-			quote_handling((*temp));
-		if ((*temp) != NULL && (*temp)->op == NOT_OP
-			&& (*temp)->str != NULL && (*temp)->str[0] == '\0')
-		{
-			to_remove = *temp;
-			*temp = (*temp)->next;
-			free(to_remove->str);
-			free(to_remove);
+		if (quote_handling_and_free(temp))
 			continue ;
-		}
 		if ((*temp) == NULL)
 			break ;
 		temp = &(*temp)->next;
