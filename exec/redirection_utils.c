@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static int	process_redirection_token(t_tokenizer *tokens,
-	t_tokenizer *start, t_env *env)
+static int	process_redirection_token(t_tokenizer *tokens, t_tokenizer *start,
+		t_env *env)
 {
 	int	fd;
 	int	has_error;

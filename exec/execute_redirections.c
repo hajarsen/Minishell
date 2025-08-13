@@ -30,8 +30,8 @@ static int	open_redir_fd(t_tokenizer *op_tok)
 		if (op_tok->next->redirect.file_fd >= 0)
 			fd = op_tok->next->redirect.file_fd;
 		else
-			fd = open_heredoc_and_write_pipe(op_tok->next,
-					glb_list()->env, NULL);
+			fd = open_heredoc_and_write_pipe(op_tok->next, glb_list()->env,
+					NULL);
 	}
 	return (fd);
 }

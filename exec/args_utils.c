@@ -21,8 +21,8 @@ static int	count_args(t_tokenizer *t)
 	tmp = t;
 	while (tmp)
 	{
-		if (tmp->op == LESS || tmp->op == LESS_LESS
-			|| tmp->op == GREAT || tmp->op == GREAT_GREAT)
+		if (tmp->op == LESS || tmp->op == LESS_LESS || tmp->op == GREAT
+			|| tmp->op == GREAT_GREAT)
 		{
 			tmp = tmp->next;
 			if (tmp)
@@ -48,8 +48,8 @@ static void	fill_args(t_tokenizer *t, char **args)
 	tmp = t;
 	while (tmp)
 	{
-		if (tmp->op == LESS || tmp->op == LESS_LESS
-			|| tmp->op == GREAT || tmp->op == GREAT_GREAT)
+		if (tmp->op == LESS || tmp->op == LESS_LESS || tmp->op == GREAT
+			|| tmp->op == GREAT_GREAT)
 		{
 			tmp = tmp->next;
 			if (tmp)
@@ -69,8 +69,8 @@ static void	fill_args(t_tokenizer *t, char **args)
 
 char	**tokens_to_args(t_tokenizer *tokens)
 {
-	int				count;
-	char			**args;
+	int		count;
+	char	**args;
 
 	count = count_args(tokens);
 	args = gc_alloc(sizeof(char *) * (count + 1));

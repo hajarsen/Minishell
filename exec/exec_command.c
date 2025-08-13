@@ -34,9 +34,9 @@ static char	*find_in_paths(char **paths, char *cmd)
 
 static char	*search_path_in_env(char *cmd, t_env *env_list)
 {
-	char		**paths;
-	char		*path_env;
-	char		*found;
+	char	**paths;
+	char	*path_env;
+	char	*found;
 
 	path_env = get_env_value("PATH", env_list);
 	if (!path_env)

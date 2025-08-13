@@ -72,8 +72,8 @@ static int	handle_parent_process(pid_t pid, int *pipefd)
 	return (pipefd[0]);
 }
 
-int	open_heredoc_and_write_pipe(t_tokenizer *token,
-	t_env *env, int *exit_status)
+int	open_heredoc_and_write_pipe(t_tokenizer *token, t_env *env,
+		int *exit_status)
 {
 	int		pipefd[2];
 	pid_t	pid;
@@ -109,8 +109,8 @@ void	process_heredocs(t_tokenizer *tokens, t_env *env, int *exit_status)
 		{
 			temp = temp->next;
 			if (temp)
-				temp->redirect.file_fd = open_heredoc_and_write_pipe(temp,
-						env, exit_status);
+				temp->redirect.file_fd = open_heredoc_and_write_pipe(temp, env,
+						exit_status);
 		}
 		if (temp)
 			temp = temp->next;

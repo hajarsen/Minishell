@@ -26,8 +26,8 @@ void	setup_heredoc_signals(void)
 
 int	write_line_to_pipe(int write_fd, char *line)
 {
-	if (write(write_fd, line, ft_strlen(line)) == -1
-		|| write(write_fd, "\n", 1) == -1)
+	if (write(write_fd, line, ft_strlen(line)) == -1 || write(write_fd, "\n",
+			1) == -1)
 	{
 		ft_putstr_fd("minishell: write error\n", 2);
 		free(line);
@@ -37,8 +37,8 @@ int	write_line_to_pipe(int write_fd, char *line)
 	return (0);
 }
 
-int	process_heredoc_line(t_tokenizer *token,
-		t_env *env, int write_fd, char *line)
+int	process_heredoc_line(t_tokenizer *token, t_env *env, int write_fd,
+		char *line)
 {
 	char	*expanded;
 	int		ret;
