@@ -155,6 +155,8 @@ void	fill_the_node_op(t_tokenizer *node, int op, int i);
 t_tokenizer *tokenizer(char *input);
 void 	expanding(t_tokenizer **token);
 char	is_quote(char c);
+void	remove_quote(char *str, int start, int end);
+int		quote_handling(t_tokenizer *token);
 
 /*EXPANDING*/
 char		*check_env(char *str);

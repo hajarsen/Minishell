@@ -48,7 +48,7 @@ static void	remove_q(t_tokenizer *token, int *i, int *j)
 	if (q != 0 && token->quotes_index != NULL
 		&& *i == (token->quotes_index[*j] - *j))
 	{
-		start = i;
+		start = *i;
 		*i += 1;
 		*j += 1;
 		while (q != is_quote(token->str[*i])
