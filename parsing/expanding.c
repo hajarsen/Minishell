@@ -16,7 +16,9 @@ static int	str_has_quote(const char *s)
 
 static int	prev_is_heredoc(t_tokenizer *head, t_tokenizer *node)
 {
-	t_tokenizer *it = head;
+	t_tokenizer	*it;
+
+	it = head;
 	if (!head || !node)
 		return (0);
 	while (it && it->next)
@@ -67,7 +69,7 @@ int	quote_handling(t_tokenizer *token)
 			i++;
 			j++;
 			while (q != is_quote(token->str[i])
-				|| i != (token->quotes_index[j] - ((j -  1))))
+				|| i != (token->quotes_index[j] - ((j - 1))))
 				i++;
 			remove_quote(token->str, start, i);
 			j++;

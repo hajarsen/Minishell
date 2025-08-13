@@ -1,8 +1,5 @@
 #include "minishell.h"
 
-
-
-
 t_tokenizer	**env_var(t_tokenizer **token)
 {
 	int			i;
@@ -24,12 +21,8 @@ t_tokenizer	**env_var(t_tokenizer **token)
 		i++;
 	}
 	if (to_retokenize(token) == 1)
-	{
 		tokenize_the_envar(token);
-	}
 	if (!to_dele)
-	{
 		save_index(*token);
-	}
 	return (token);
 }
