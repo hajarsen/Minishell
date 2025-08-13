@@ -101,8 +101,8 @@ void	expanding(t_tokenizer **token)
 		if ((*temp)->op == NOT_OP)
 			quote_handling((*temp));
 		// Remove empty tokens after expansion
-		if ((*temp) != NULL && (*temp)->op == NOT_OP &&
-			(*temp)->str != NULL && (*temp)->str[0] == '\0')
+		if ((*temp) != NULL && (*temp)->op == NOT_OP
+		&& (*temp)->str != NULL && (*temp)->str[0] == '\0')
 		{
 			to_remove = *temp;
 			*temp = (*temp)->next;
