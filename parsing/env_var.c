@@ -38,3 +38,39 @@ t_tokenizer	**env_var(t_tokenizer **token)
 		save_index(*token);
 	return (token);
 }
+
+static void	remove_q(t_tokenizer *token, int *i, int *j)
+{
+	char	q;
+	int		start;
+
+	q = is_quote(token->str[*i]);
+	if (q != 0 && token->quotes_index != NULL
+		&& *i == (token->quotes_index[*j] - *j))
+	{
+		start = i;
+		*i += 1;
+		*j += 1;
+		while (q != is_quote(token->str[*i])
+			|| *i != (token->quotes_index[*j] - (*j - 1)))
+			*i += 1;
+		remove_quote(token->str, start, *i);
+		*j += 1;
+		*i -= 2;
+	}
+}
+
+int	quote_handling(t_tokenizer *token)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (token->str[i] != 0)
+	{
+		remove_q(token, &i, &j);
+		i++;
+	}
+	return (0);
+}

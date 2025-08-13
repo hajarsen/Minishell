@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expanding.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sel-jari <marvin@42.ma>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/13 02:46:13 by sel-jari          #+#    #+#             */
+/*   Updated: 2025/08/13 02:46:14 by sel-jari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	str_has_quote(const char *s)
@@ -50,36 +62,6 @@ void	remove_quote(char *str, int start, int end)
 	str[ft_strlen(str) - 2] = 0;
 }
 
-int	quote_handling(t_tokenizer *token)
-{
-	int		i;
-	char	q;
-	int		start;
-	int		j;
-
-	i = 0;
-	j = 0;
-	while (token->str[i] != 0)
-	{
-		q = is_quote(token->str[i]);
-		if (q != 0 && token->quotes_index != NULL
-			&& i == (token->quotes_index[j] - j))
-		{
-			start = i;
-			i++;
-			j++;
-			while (q != is_quote(token->str[i])
-				|| i != (token->quotes_index[j] - ((j - 1))))
-				i++;
-			remove_quote(token->str, start, i);
-			j++;
-			i -= 2;
-		}
-		i++;
-	}
-	return (0);
-}
-
 void	expanding(t_tokenizer **token)
 {
 	t_tokenizer	**temp;
@@ -88,21 +70,18 @@ void	expanding(t_tokenizer **token)
 	temp = token;
 	while ((*temp) != NULL)
 	{
-		// Do not read heredoc during expanding; it is handled at execution time
 		if ((*temp)->op == LESS_LESS)
 			(*temp)->hd = NULL;
 		if ((*temp)->op == NOT_OP)
 		{
-			/* Mark heredoc delimiter quoting (before we strip quotes) */
 			if (prev_is_heredoc(*token, *temp))
 				(*temp)->redirect.qt = str_has_quote((*temp)->str) ? THERES_QUOTE : NO_QUOTE;
 			temp = env_var(temp);
 		}
 		if ((*temp)->op == NOT_OP)
 			quote_handling((*temp));
-		// Remove empty tokens after expansion
 		if ((*temp) != NULL && (*temp)->op == NOT_OP
-		&& (*temp)->str != NULL && (*temp)->str[0] == '\0')
+			&& (*temp)->str != NULL && (*temp)->str[0] == '\0')
 		{
 			to_remove = *temp;
 			*temp = (*temp)->next;
