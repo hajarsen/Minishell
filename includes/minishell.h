@@ -119,6 +119,16 @@ typedef struct s_glb
 
 }t_glb;
 
+typedef struct s_pipe_data
+{
+    int             nseg;
+    int             (*pfds)[2];
+    t_tokenizer     **starts;
+    t_tokenizer     **ends;
+    pid_t           *pids;
+    t_glb           *glb;
+    int             *exit_status;
+}   t_pipe_data;
 
 t_glb	*glb_list(void);
 void	print_env(t_env *env_list);
@@ -167,6 +177,8 @@ int		check_parsing_errors(t_tokenizer *token);
 int open_heredoc_and_write_pipe(t_tokenizer *token, t_env *env, int *exit_status);
 int	process_heredoc_line(t_tokenizer *token, t_env *env, int write_fd, char *line);
 int	write_line_to_pipe(int write_fd, char *line);
+void    setup_child_pipes(int idx, int nseg, int (*pfds)[2]);
+void    wait_children(pid_t *pids, int nseg, int *last_status);
 int	is_name_char(int c);
 void	setup_heredoc_signals(void);
 int	redirection_infos(t_tokenizer *tokens);
@@ -215,10 +227,17 @@ void	update_shell_lvl(t_env **env_list);
 char	**envp_to_env_vector(t_env *env_list);
 char	**envlist_to_array(t_env *env_list);
 int     has_pipe(t_tokenizer *tokens);
-
+void    cleanup_pipes(int (*pfds)[2], int count);
+void    cleanup_pipeline(t_pipe_data *pipe_data, int *last_status);
 void execute_pipeline(t_tokenizer *tokens, t_glb *glb, int *exit_status);
 void save_exit_status(t_glb *glb, int status_code);
 void	close_all_pipes(int (*pfds)[2], int n);
+int create_pipes(int nseg, int (**out_pfds)[2]);
+void    free_pipes(int (*pfds)[2], int n_pipes);
+void perform_execve(char **args, char *path, t_env *env);
+int init_segments(t_tokenizer ***starts, t_tokenizer ***ends, t_tokenizer *tokens, int nseg);
+int init_pipeline_data(t_pipe_data *pipe_data, t_tokenizer *tokens);
+int alloc_pids(pid_t **pids, int nseg);
 void	collect_segments(t_tokenizer *tokens, t_tokenizer **starts, t_tokenizer **ends, int n);
 int	count_segments(t_tokenizer *tokens);
 void	extract_exit_status(int status, int *exit_status);
