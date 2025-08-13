@@ -30,3 +30,6 @@ fclean:
 	${RM} ${NAME} ${OBJ}
 	$(MAKE) fclean -C $(LIB_DIR)
 re: fclean all
+
+.PHONY: all clean fclean re
+.SECONDARY: $(OBJ)
