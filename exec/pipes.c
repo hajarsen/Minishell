@@ -14,8 +14,9 @@
 
 static void	exec_resolved_command(char **args, t_glb *glb, int *exit_status)
 {
-	int		is_blt;
-	char	*path;
+	int			is_blt;
+	char		*path;
+	struct stat	st;
 
 	if (is_builtin(args[0]))
 	{
@@ -26,10 +27,14 @@ static void	exec_resolved_command(char **args, t_glb *glb, int *exit_status)
 	path = get_cmd_path(args[0], glb->env);
 	if (!path)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(args[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
+		print_minishell_err(args[0], "command not found");
 		exit(127);
+	}
+	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		print_minishell_err(args[0], "Is a directory");
+		free(path);
+		exit(126);
 	}
 	perform_execve(args, path, glb->env);
 }

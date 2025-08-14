@@ -61,3 +61,16 @@ void	ignore_interactive_signals(void)
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 }
+
+void	print_minishell_err(const char *cmd, const char *msg)
+{
+	ft_putstr_fd("minishell", 2);
+	if (cmd && *cmd)
+	{
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd((char *)cmd, 2);
+	}
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd((char *)msg, 2);
+	ft_putstr_fd("\n", 2);
+}

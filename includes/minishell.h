@@ -268,5 +268,6 @@ void		collect_segments(t_tokenizer *tokens,
 int			count_segments(t_tokenizer *tokens);
 void		extract_exit_status(int status, int *exit_status);
 void		ignore_interactive_signals(void);
+void	print_minishell_err(const char *cmd, const char *msg);
 long long	my_ft_atoll(const char *str, int *overflow);
 #endif
