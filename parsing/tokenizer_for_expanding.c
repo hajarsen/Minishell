@@ -25,16 +25,19 @@ static t_tokenizer	*add_node(t_tokenizer **node)
 
 static int	alloc_quote(char *input, size_t *end)
 {
-	int	bl;
+	int		bl;
+	char	c;
 
 	bl = 0;
-	while (is_quote(input[*end]))
+	c = input[*end];
+	while (is_quote(c))
 	{
 		*end += 1;
-		while (is_quote(input[*end]) == 0)
+		while (is_quote(input[*end]) != c)
 			*end += 1;
 		*end += 1;
 		bl = 1;
+		c = input[*end];
 	}
 	return (bl);
 }

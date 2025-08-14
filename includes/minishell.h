@@ -155,6 +155,7 @@ void		free_tokens(char *input, t_tokenizer *tokens);
 void		free_env(t_env *env);
 t_env		*save_env(char **env);
 int			check_input_errors(char *input);
+void		free_str_and_itoa(char *temp_itoi, char *str);
 
 /* TOKENIZER */
 
@@ -172,12 +173,15 @@ t_env		*save_env(char **env);
 t_here_doc	*here_doc(t_tokenizer *token);
 t_tokenizer	**env_var(t_tokenizer **token);
 t_tokenizer	*tokenizer_for_expanding(char *input);
-char		*check_env(char *str);
+char		*check_env(char *str, int *check);
 char		*re_alloc(char *str, int *start, int len, char *env_value);
 void		tokenize_the_envar(t_tokenizer **token);
 void		save_index(t_tokenizer *token);
 int			to_retokenize(t_tokenizer **token);
 int			expand_nq(t_tokenizer **token, int *i);
+int			remove_dollar_quote(t_tokenizer **token, int *i);
+char		*modify_envar_for_nq(char *str);
+void		quote_quotes(char *result, char *str, int len);
 /* AST_ PASRER */
 t_ast		*ast_builder(t_tokenizer *token);
 

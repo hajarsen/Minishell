@@ -66,12 +66,14 @@ static void	expand_dq(t_tokenizer *token, int *i)
 {
 	char	*env_value;
 	int		len;
+	int		check;
 
 	if ((token)->str[*i] == '$')
 	{
 		if (valid_expanding((token)->str + *i, &len))
 		{
-			env_value = check_env(ft_substr((token)->str, *i + 1, len - 1));
+			env_value = check_env(ft_substr((token)->str, *i + 1, len - 1),
+					&check);
 			(token)->str = re_alloc((token)->str, i, len, env_value);
 		}
 	}
@@ -81,13 +83,21 @@ int	expand_nq(t_tokenizer **token, int *i)
 {
 	char	*env_value;
 	int		len;
+	int		check;
 
+	check = 1;
 	if ((*token)->str[*i] == '$')
 	{
+		if (remove_dollar_quote(token, i) == 0)
+			return (0);
 		if (valid_expanding((*token)->str + *i, &len))
 		{
-			env_value = check_env(ft_substr((*token)->str, *i + 1, len - 1));
+			env_value = check_env(ft_substr((*token)->str, *i + 1, len - 1),
+					&check);
+			if (check == 1 && env_value != NULL)
+				env_value = modify_envar_for_nq(env_value);
 			(*token)->str = re_alloc((*token)->str, i, len, env_value);
+			free(env_value);
 			return (1);
 		}
 	}

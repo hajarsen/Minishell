@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*check_env(char *str)
+char	*check_env(char *str, int *check)
 {
 	t_env	*env;
 	char	*exit_str;
@@ -20,11 +20,11 @@ char	*check_env(char *str)
 
 	if (ft_strncmp(str, "?", 2) == 0)
 	{
-		free(str);
 		temp_itoa = ft_itoa(glb_list()->exit_status);
 		exit_str = gc_alloc(ft_strlen(temp_itoa) + 1);
 		ft_strlcpy(exit_str, temp_itoa, ft_strlen(temp_itoa) + 1);
-		free(temp_itoa);
+		free_str_and_itoa(temp_itoa, str);
+		*check = 0;
 		return (exit_str);
 	}
 	env = glb_list()->env;

@@ -1,5 +1,5 @@
 SRC = main.c parsing/env_var.c parsing/free.c parsing/tokenizer.c parsing/tokenizer_utils.c\
-	parsing/execution_utils.c parsing/glblist.c parsing/expanding_utils_extra.c parsing/garbage_collector.c\
+	parsing/execution_utils.c parsing/glblist.c parsing/expanding_utils_extra.c parsing/garbage_collector.c parsing/modify_envar.c\
 	parsing/expanding.c parsing/expanding_utils.c parsing/check_errors.c parsing/tokenizer_for_expanding.c parsing/save_env.c parsing/execution_errors.c\
 	builtins/cd.c builtins/cd_utils.c  builtins/echo.c builtins/env.c exec/global.c exec/redirection_utils.c exec/redirection_utils2.c exec/heredoc.c exec/heredoc_utils.c\
 	exec/heredoc_expansion.c exec/heredoc_expansion_utils.c exec/execute_redirections.c exec/signals_handlers.c exec/signals_setup.c exec/exec_builtins.c\
