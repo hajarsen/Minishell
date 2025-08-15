@@ -14,7 +14,7 @@
 
 void	handle_command_not_found(char *arg, char *path)
 {
-	if (!path)
+	if (!path || arg[0] == 0)
 	{
 		ft_putstr_fd("minishell: command not found: ", 2);
 		ft_putstr_fd(arg, 2);

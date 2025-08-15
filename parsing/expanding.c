@@ -64,19 +64,8 @@ void	remove_quote(char *str, int start, int end)
 
 static int	quote_handling_and_free(t_tokenizer **temp)
 {
-	t_tokenizer	*to_remove;
-
 	if ((*temp)->op == NOT_OP)
 		quote_handling((*temp));
-	if ((*temp) != NULL && (*temp)->op == NOT_OP
-		&& (*temp)->str != NULL && (*temp)->str[0] == '\0')
-	{
-		to_remove = *temp;
-		*temp = (*temp)->next;
-		free(to_remove->str);
-		free(to_remove);
-		return (1);
-	}
 	return (0);
 }
 

@@ -13,7 +13,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <linux/limits.h>
@@ -47,6 +46,7 @@ typedef enum e_operator
 	NEXT,
 	NOT_OP,
 	ENV_CASE,
+	ITS_NULL_EXPAND,
 }				t_operator;
 
 typedef enum e_quote
@@ -182,6 +182,7 @@ int			expand_nq(t_tokenizer **token, int *i);
 int			remove_dollar_quote(t_tokenizer **token, int *i);
 char		*modify_envar_for_nq(char *str);
 void		quote_quotes(char *result, char *str, int len);
+void		if_expand_null(t_tokenizer **token, t_tokenizer *current);
 /* AST_ PASRER */
 t_ast		*ast_builder(t_tokenizer *token);
 

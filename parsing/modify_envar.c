@@ -78,3 +78,24 @@ void	free_str_and_itoa(char *temp_itoi, char *str)
 	free(str);
 	free(temp_itoi);
 }
+
+void	if_expand_null(t_tokenizer **token, t_tokenizer *current)
+{
+	t_tokenizer	*to_remove;
+
+	if (current != NULL && current->op == NOT_OP
+		&& current->str != NULL && current->str[0] == '\0')
+	{
+		if (current->next != NULL)
+		{
+			to_remove = current;
+			*token = current->next;
+			free(to_remove->str);
+			free(to_remove);
+		}
+		else
+		{
+			current->op = ITS_NULL_EXPAND;
+		}
+	}
+}
