@@ -70,18 +70,21 @@ static int	error_message(int i, char *input, t_tokenizer *token)
 	{
 		free_tokens(input, token);
 		printf("Minishell: syntax error near unexpectedtoken \'newline\'\n");
+		glb_list()->exit_status = 2;
 		return (1);
 	}
 	if (i == 2)
 	{
 		free_tokens(input, token);
 		printf("Minishell: syntax error near unexpected token `||'\n");
+		glb_list()->exit_status = 2;
 		return (1);
 	}
 	if (i == 3)
 	{
 		free_tokens(input, token);
 		printf("Minishell: syntax error near unexpected token\n");
+		glb_list()->exit_status = 2;
 		return (1);
 	}
 	else

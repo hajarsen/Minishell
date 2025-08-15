@@ -188,7 +188,7 @@ t_ast		*ast_builder(t_tokenizer *token);
 /* ERRORS */
 int			input_error(char *input);
 int			check_parsing_errors(t_tokenizer *token, char *input);
-void		handle_execve_error_for_main(char *cmd_name,
+void		handle_execve_error_for_main(char **args,
 				char *path, char **envp);
 void		handle_directory_error(char *cmd_name, char *path);
 void		handle_command_not_found(char *arg, char *path);
@@ -268,6 +268,6 @@ void		collect_segments(t_tokenizer *tokens,
 int			count_segments(t_tokenizer *tokens);
 void		extract_exit_status(int status, int *exit_status);
 void		ignore_interactive_signals(void);
-void	print_minishell_err(const char *cmd, const char *msg);
+void		print_minishell_err(const char *cmd, const char *msg);
 long long	my_ft_atoll(const char *str, int *overflow);
 #endif

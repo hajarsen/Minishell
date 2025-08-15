@@ -38,22 +38,15 @@ void	handle_directory_error(char *cmd_name, char *path)
 	}
 }
 
-void	handle_execve_error_for_main(char *cmd_name, char *path, char **envp)
+void	handle_execve_error_for_main(char **args, char *path, char **envp)
 {
-	int	saved_errno;
-
-	saved_errno = errno;
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd_name, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putendl_fd(strerror(saved_errno), 2);
-	free(path);
-	free_strs(envp);
-	if (saved_errno == ENOENT)
-		exit(127);
-	else if (saved_errno == EACCES || saved_errno == ENOTDIR
-		|| saved_errno == EISDIR || saved_errno == ENOEXEC)
+	if (execve(path, args, envp) == -1)
+	{
+		ft_putstr_fd("minishell:", 2);
+		ft_putstr_fd(args[0], 2);
+		ft_putstr_fd(":command execution failed \n", 2);
+		free(path);
+		free_strs(envp);
 		exit(126);
-	else
-		exit(126);
+	}
 }

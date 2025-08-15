@@ -38,7 +38,6 @@ int	open_redirection_file(t_tokenizer *token, t_env *env)
 
 int	handle_redirection_error(t_tokenizer *token, t_tokenizer *start)
 {
-	token->next->redirect.errnum = errno;
 	if (token->op != LESS_LESS)
 	{
 		close_redirection_fds(start);

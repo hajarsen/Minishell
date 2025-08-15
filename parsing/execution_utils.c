@@ -45,8 +45,7 @@ void	execute_child_process(char **args, t_tokenizer *tokens)
 		free(path);
 		exit(1);
 	}
-	execve(path, args, envp);
-	handle_execve_error_for_main(args[0], path, envp);
+	handle_execve_error_for_main(args, path, envp);
 }
 
 void	handle_parent_process_main(pid_t pid, int *exit_status)

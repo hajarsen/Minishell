@@ -56,14 +56,19 @@ static char	*search_path_in_env(char *cmd, t_env *env_list)
 
 char	*get_cmd_path(char *cmd, t_env *env_list)
 {
-	char	*dup;
+	char		*dup;
+	struct stat	st;
 
 	if (!cmd)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
 	{
-		dup = ft_strdup(cmd);
-		return (dup);
+		if (stat(cmd, &st) == 0)
+		{
+			dup = ft_strdup(cmd);
+			return (dup);
+		}
+		return (NULL);
 	}
 	return (search_path_in_env(cmd, env_list));
 }
