@@ -47,6 +47,7 @@ typedef enum e_operator
 	NOT_OP,
 	ENV_CASE,
 	ITS_NULL_EXPAND,
+	DO_NOT_EXPAND,
 }				t_operator;
 
 typedef enum e_quote
@@ -93,6 +94,7 @@ typedef struct s_tokenizer
 	t_env_list			*env_list;
 	t_here_doc			*hd;
 	t_redirections		redirect;
+	t_operator			red_case;
 	struct s_tokenizer	*next;
 }				t_tokenizer;
 
@@ -169,6 +171,7 @@ char		is_quote(char c);
 void		remove_quote(char *str, int start, int end);
 int			quote_handling(t_tokenizer *token);
 t_env		*save_env(char **env);
+void		dont_expand_herdoc(t_tokenizer *tokens);
 /*EXPANDING*/
 t_here_doc	*here_doc(t_tokenizer *token);
 t_tokenizer	**env_var(t_tokenizer **token);

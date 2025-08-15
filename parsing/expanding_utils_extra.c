@@ -123,7 +123,7 @@ void	save_index(t_tokenizer *token)
 			i++;
 			while (token->str[i] != c)
 			{
-				if (c == '\"')
+				if (c == '\"' && token->red_case != DO_NOT_EXPAND)
 					expand_dq(token, &i);
 				i++;
 			}

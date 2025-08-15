@@ -39,6 +39,7 @@ static void	parsing(char *input)
 	tokens = tokenizer(input);
 	if (check_parsing_errors(tokens, input))
 		return ;
+	dont_expand_herdoc(tokens);
 	expanding(&tokens);
 	set_signal_handler(tokens);
 	init_redirect_fds(tokens);

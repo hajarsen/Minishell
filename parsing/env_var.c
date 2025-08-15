@@ -27,7 +27,8 @@ t_tokenizer	**env_var(t_tokenizer **token)
 			while ((*token)->str[i] != c)
 				i++;
 		}
-		expand_nq(token, &i);
+		if ((*token)->red_case != DO_NOT_EXPAND)
+			expand_nq(token, &i);
 		i++;
 	}
 	if (to_retokenize(token) == 1)
@@ -70,4 +71,17 @@ int	quote_handling(t_tokenizer *token)
 		i++;
 	}
 	return (0);
+}
+
+void	dont_expand_herdoc(t_tokenizer *tokens)
+{
+	t_tokenizer	*temp;
+
+	temp = tokens;
+	while (temp != NULL)
+	{
+		if (temp != NULL && temp->op == LESS_LESS && temp->next != NULL)
+			temp->next->red_case = DO_NOT_EXPAND;
+		temp = temp->next;
+	}
 }
