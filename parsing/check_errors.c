@@ -81,7 +81,7 @@ static int	error_message(int i, char *input, t_tokenizer *token)
 	if (i == 3)
 	{
 		free_tokens(input, token);
-		printf("Minishell: syntax error near unexpected token `>'\n");
+		printf("Minishell: syntax error near unexpected token\n");
 		return (1);
 	}
 	else
@@ -90,7 +90,9 @@ static int	error_message(int i, char *input, t_tokenizer *token)
 
 int	check_parsing_errors(t_tokenizer *token, char *input)
 {
-	if (token->op != NOT_OP && token->op != LESS_LESS)
+	if ((token->op != NOT_OP && token->op != LESS_LESS)
+		|| (token->next != NULL && token->op == LESS_LESS
+			&& token->next->op == PIPE))
 		return (error_message(1, input, token));
 	while (token != NULL)
 	{
