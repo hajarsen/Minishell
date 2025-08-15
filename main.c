@@ -46,7 +46,7 @@ static void	parsing(char *input)
 	if (has_pipe(tokens, input, &exit_status))
 		return ;
 	args = tokens_to_args(tokens);
-	if (args && args[0] && args[0][0] != 0)
+	if (args && args[0] && tokens->op != ITS_NULL_EXPAND)
 		execution(args, tokens);
 	close_redirection_fds(tokens);
 	free_args(args);
