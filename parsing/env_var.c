@@ -27,8 +27,7 @@ t_tokenizer	**env_var(t_tokenizer **token)
 			while ((*token)->str[i] != c)
 				i++;
 		}
-		if ((*token)->red_case != DO_NOT_EXPAND)
-			expand_nq(token, &i);
+		expand_nq(token, &i);
 		i++;
 	}
 	if (to_retokenize(token) == 1)

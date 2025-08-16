@@ -94,7 +94,8 @@ int	expand_nq(t_tokenizer **token, int *i)
 		{
 			env_value = check_env(ft_substr((*token)->str, *i + 1, len - 1),
 					&check);
-			if (check == 1 && env_value != NULL)
+			if (check == 1 && env_value != NULL
+				&& (*token)->red_case != DO_NOT_EXPAND)
 				env_value = modify_envar_for_nq(env_value);
 			(*token)->str = re_alloc((*token)->str, i, len, env_value);
 			if_expand_null(token, *token);
