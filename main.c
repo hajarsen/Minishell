@@ -62,6 +62,7 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	setup_signals();
 	glb_list()->env = save_env(env);
+	update_shell_lvl(&glb_list()->env);
 	glb_list()->exit_status = 0;
 	while (1)
 	{
