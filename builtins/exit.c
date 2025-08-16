@@ -56,12 +56,13 @@ void	ft_exit(char **args)
 		if (args[2])
 		{
 			exit_arg_error();
-			exit(1);
+			glb_list()->exit_status = 1;
+			return ;
 		}
 		exit_code = my_ft_atoll(args[1], &overflow);
 		if (overflow)
 			exit_num_error(args[1]);
 		exit((unsigned char)exit_code);
 	}
-	exit(0);
+	exit(glb_list()->exit_status);
 }
