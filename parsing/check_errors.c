@@ -93,9 +93,8 @@ static int	error_message(int i, char *input, t_tokenizer *token)
 
 int	check_parsing_errors(t_tokenizer *token, char *input)
 {
-	if ((token->op != NOT_OP && token->op != LESS_LESS)
-		|| (token->next != NULL && token->op == LESS_LESS
-			&& token->next->op == PIPE))
+	if (token->next != NULL && token->op == LESS_LESS
+			&& token->next->op == PIPE)
 		return (error_message(1, input, token));
 	while (token != NULL)
 	{
