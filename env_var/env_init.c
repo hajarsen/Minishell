@@ -49,5 +49,4 @@ void	init_env_var(t_env **env_list, char **envp)
 		extract_and_push(env_list, envp[i]);
 		i++;
 	}
-	update_shell_lvl(env_list);
 }
