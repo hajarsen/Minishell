@@ -31,9 +31,6 @@ void	signal_handler_input(int signum)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		glb_list()->exit_status = 130;
 	}
-	else if (signum == SIGQUIT)
-	{
-	}
 }
 
 static void	handle_heredoc_sigint(void)
