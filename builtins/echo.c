@@ -49,12 +49,6 @@ void	echo(char **args, int *exit_status)
 
 	i = 1;
 	new_line = 1;
-	if (args[i] && ft_strcmp(args[i], "$?") == 0)
-	{
-		printf("%d\n", glb_list()->exit_status);
-		*exit_status = 0;
-		return ;
-	}
 	while (args[i] && check_n_flag(args[i]))
 	{
 		new_line = 0;
