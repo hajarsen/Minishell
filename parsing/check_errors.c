@@ -41,6 +41,23 @@ int	input_error(char *input)
 	return (0);
 }
 
+static int	only_spaces_tabs(char *input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (ft_isspace(input[i]) == 0)
+		{
+			return (0);
+		}
+		i++;
+	}
+	free(input);
+	return (1);
+}
+
 int	check_input_errors(char *input)
 {
 	if (!input)
@@ -55,8 +72,12 @@ int	check_input_errors(char *input)
 		free(input);
 		return (1);
 	}
+	if (only_spaces_tabs(input))
+		return (1);
 	if (input_error(input) == 1)
 	{
+		glb_list()->exit_status = 2;
+		add_history(input);
 		free(input);
 		return (1);
 	}
