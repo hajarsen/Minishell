@@ -16,7 +16,7 @@ void	print_cd_error(const char *path)
 {
 	ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 	ft_putstr_fd((char *)path, STDERR_FILENO);
-	ft_putstr_fd(": error\n", STDERR_FILENO);
+	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 }
 
 char	*get_env_value_or_default(t_env *env_list, const char *name,

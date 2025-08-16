@@ -47,7 +47,7 @@ static int	handle_fd(int fd, int std_fd, char *filename)
 	}
 	if (dup2(fd, std_fd) < 0)
 	{
-		ft_putstr_fd("minishell: dup2 failed\n", 2);
+		ft_putstr_fd("minishell: Permission denied\n", 2);
 		if (fd > 2)
 			close(fd);
 		return (1);

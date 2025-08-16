@@ -68,7 +68,7 @@ void	setup_child_pipes(int idx, int nseg, int (*pfds)[2])
 	{
 		if (dup2(pfds[idx - 1][READING_END], STDIN_FILENO) < 0)
 		{
-			ft_putendl_fd("minishell: dup2 failed", 2);
+			ft_putendl_fd("minishell: Permission denied", 2);
 			exit(1);
 		}
 	}

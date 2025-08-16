@@ -40,7 +40,10 @@ int	execute_builtin(char **args, t_env **env_list, int *exit_status)
 	if (!ft_strcmp(args[0], "cd"))
 		*exit_status = ft_cd(args, env_list);
 	else if (!ft_strcmp(args[0], "exit"))
+	{
 		ft_exit(args);
+		*exit_status = glb_list()->exit_status;
+	}
 	else if (!ft_strcmp(args[0], "env"))
 		*exit_status = ft_env(args, *env_list);
 	else if (!ft_strcmp(args[0], "export"))
