@@ -76,7 +76,7 @@ static int	error_message(int i, char *input, t_tokenizer *token)
 	if (i == 2)
 	{
 		free_tokens(input, token);
-		printf("Minishell: syntax error near unexpected token `||'\n");
+		printf("Minishell: syntax error near unexpected token `|'\n");
 		glb_list()->exit_status = 2;
 		return (1);
 	}
@@ -93,6 +93,8 @@ static int	error_message(int i, char *input, t_tokenizer *token)
 
 int	check_parsing_errors(t_tokenizer *token, char *input)
 {
+	if (token->op == PIPE)
+		return (error_message(2, input, token));
 	if (token->next != NULL && token->op == LESS_LESS
 			&& token->next->op == PIPE)
 		return (error_message(1, input, token));
@@ -105,13 +107,9 @@ int	check_parsing_errors(t_tokenizer *token, char *input)
 			if (token->next->op != NOT_OP)
 			{
 				if (token->op == PIPE && token->next->op == PIPE)
-				{
 					return (error_message(2, input, token));
-				}
 				if (token->op != PIPE && token->next->op != PIPE)
-				{
 					return (error_message(3, input, token));
-				}
 			}
 		}
 		token = token->next;
