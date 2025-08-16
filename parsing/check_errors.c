@@ -96,7 +96,7 @@ int	check_parsing_errors(t_tokenizer *token, char *input)
 	if (token->op == PIPE)
 		return (error_message(2, input, token));
 	if (token->next != NULL && token->op == LESS_LESS
-			&& token->next->op == PIPE)
+		&& token->next->op == PIPE)
 		return (error_message(1, input, token));
 	while (token != NULL)
 	{
