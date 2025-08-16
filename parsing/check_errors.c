@@ -131,6 +131,8 @@ int	check_parsing_errors(t_tokenizer *token, char *input)
 					return (error_message(2, input, token));
 				if (token->op != PIPE && token->next->op != PIPE)
 					return (error_message(3, input, token));
+				if (token->op != PIPE && token->next->op == PIPE)
+					return (error_message(3, input, token));
 			}
 		}
 		token = token->next;
