@@ -17,7 +17,7 @@ void	setup_heredoc_signals(void)
 	struct sigaction	act;
 
 	sigemptyset(&act.sa_mask);
-	act.sa_handler = SIG_DFL;
+	act.sa_handler = signal_handler_heredoc;
 	act.sa_flags = 0;
 	sigaction(SIGINT, &act, NULL);
 	act.sa_handler = SIG_IGN;

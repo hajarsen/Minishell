@@ -68,7 +68,7 @@ void	handle_parent_process_main(pid_t pid, int *exit_status)
 			if (sig == SIGINT)
 				ft_putstr_fd("\n", STDOUT_FILENO);
 			else if (sig == SIGQUIT)
-				ft_putstr_fd("Quit: 3\n", STDOUT_FILENO);
+				ft_putstr_fd("Quit: (core dumped)\n", STDOUT_FILENO);
 			glb_list()->exit_status = 128 + sig;
 		}
 	}

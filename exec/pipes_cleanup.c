@@ -46,20 +46,23 @@ void	free_pipes(int (*pfds)[2], int n_pipes)
 void	wait_children(pid_t *pids, int nseg, int *last_status)
 {
 	int	i;
-	int	status;
+	int	any_sigint;
+	int	child_sigint;
 
 	*last_status = 0;
+	any_sigint = 0;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	i = 0;
 	while (i < nseg)
 	{
-		if (pids[i] > 0)
-		{
-			waitpid(pids[i], &status, 0);
-			if (i == nseg - 1)
-				*last_status = status;
-		}
+		child_sigint = wait_for_child(pids[i], last_status, i, nseg);
+		if (child_sigint)
+			any_sigint = 1;
 		i++;
 	}
+	setup_signals();
+	handle_signal_termination(*last_status, any_sigint);
 }
 
 void	cleanup_pipeline(t_pipe_data *pipe_data, int *last_status)

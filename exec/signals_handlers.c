@@ -37,6 +37,7 @@ static void	handle_heredoc_sigint(void)
 {
 	write(STDOUT_FILENO, "\n", 1);
 	glb_list()->exit_status = 130;
+	exit(1);
 }
 
 static void	handle_heredoc_sigquit(void)

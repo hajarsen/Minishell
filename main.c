@@ -43,8 +43,9 @@ static void	parsing(char *input)
 	expanding(&tokens);
 	set_signal_handler(tokens);
 	init_redirect_fds(tokens);
-	redirection_infos(tokens);
 	if (has_pipe(tokens, input, &exit_status))
+		return ;
+	if (redirection_infos(tokens, input))
 		return ;
 	args = tokens_to_args(tokens);
 	if (args && args[0] && tokens->op != ITS_NULL_EXPAND)

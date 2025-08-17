@@ -29,7 +29,7 @@ static int	process_redirection_token(t_tokenizer *tokens, t_tokenizer *start,
 	return (0);
 }
 
-int	redirection_infos(t_tokenizer *tokens)
+int	redirection_infos(t_tokenizer *tokens, char *input)
 {
 	int			has_error;
 	t_tokenizer	*start;
@@ -46,7 +46,10 @@ int	redirection_infos(t_tokenizer *tokens)
 		{
 			has_error = process_redirection_token(tokens, start, env);
 			if (has_error)
+			{
+				free_tokens(input, tokens);
 				return (has_error);
+			}
 		}
 		tokens = tokens->next;
 	}

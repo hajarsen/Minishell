@@ -43,4 +43,5 @@ void	free_tokens(char *input, t_tokenizer *tokens)
 		temp = NULL;
 	}
 	free(input);
+	input = NULL;
 }

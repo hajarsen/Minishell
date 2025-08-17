@@ -100,9 +100,11 @@ void	execute_pipeline(t_tokenizer *tokens, t_glb *glb, int *exit_status)
 	pipe_data.nseg = count_segments(tokens);
 	if (pipe_data.nseg <= 0 || !init_pipeline_data(&pipe_data, tokens))
 		return ;
+	process_heredocs(tokens, glb->env, exit_status);
 	spawn_all_children(&pipe_data);
 	ignore_interactive_signals();
 	cleanup_pipeline(&pipe_data, &last_status);
 	extract_exit_status(last_status, pipe_data.exit_status);
 	save_exit_status(pipe_data.glb, *pipe_data.exit_status);
+	setup_signals();
 }

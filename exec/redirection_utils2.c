@@ -47,5 +47,9 @@ int	handle_redirection_error(t_tokenizer *token, t_tokenizer *start)
 		close_redirection_fds(start);
 		return (1);
 	}
-	return (0);
+	else
+	{
+		close_redirection_fds(start);
+		return (1);
+	}
 }
