@@ -31,7 +31,7 @@ NAME = libft.a
 LIBC = ar rcs
 RM = rm -f
 CC = gcc 
-WFLAGS = -Wall -Wextra -Werror -Iincludes -g3 -O0 -fsanitize=address,leak,undefined 
+WFLAGS = -Wall -Wextra -Werror -Iincludes
 
 all: ${NAME}
 
