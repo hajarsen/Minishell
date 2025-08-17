@@ -64,7 +64,7 @@ void	handle_parent_process_main(pid_t pid, int *exit_status)
 			glb_list()->exit_status = WEXITSTATUS(*exit_status);
 		else if (WIFSIGNALED(*exit_status))
 		{
-			WTERMSIG(*exit_status);
+			sig = WTERMSIG(*exit_status);
 			if (sig == SIGINT)
 				ft_putstr_fd("\n", STDOUT_FILENO);
 			else if (sig == SIGQUIT)
