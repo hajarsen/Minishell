@@ -10,7 +10,7 @@ NAME = minishell
 HEADER = includes/minishell.h
 OBJ = ${SRC:.c=.o}
 
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror -Iincludes
 
 LIB_DIR = libft
