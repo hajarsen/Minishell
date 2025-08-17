@@ -48,8 +48,8 @@ static int	handle_fork_and_child(t_tokenizer *token, t_env *env, int *pipefd)
 	ret = read_and_write_heredoc(token, env, pipefd[1]);
 	close(pipefd[1]);
 	if (ret == -1)
-		_exit(1);
-	_exit(0);
+		exit(1);
+	exit(0);
 }
 
 static int	handle_parent_process(pid_t pid, int *pipefd)
