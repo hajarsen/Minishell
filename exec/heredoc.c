@@ -31,7 +31,7 @@ static int	read_and_write_heredoc(t_tokenizer *token, t_env *env, int write_fd)
 	}
 	if (!line)
 	{
-		ft_putstr_fd("minishell: warning: here-document\n", 2);
+		ft_putstr_fd("minishell: warning: here-document ", 2);
 		ft_putstr_fd("delimited by end-of-file (wanted `", 2);
 		ft_putstr_fd(token->str, 2);
 		ft_putstr_fd("')\n", 2);
@@ -57,7 +57,10 @@ static int	handle_parent_process(pid_t pid, int *pipefd)
 	int	status;
 
 	close(pipefd[1]);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	(void)waitpid(pid, &status, 0);
+	setup_signals();
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
 		glb_list()->exit_status = 130;

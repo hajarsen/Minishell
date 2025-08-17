@@ -57,6 +57,16 @@ static int	handle_fd(int fd, int std_fd, char *filename)
 	return (0);
 }
 
+static int	here_d_case(int fd, t_tokenizer *tokens)
+{
+	if (fd < 0 && tokens->op == LESS_LESS)
+	{
+		printf("\n");
+		return (1);
+	}
+	return (0);
+}
+
 int	execute_redirections(t_tokenizer *tokens)
 {
 	int	fd;
@@ -76,6 +86,8 @@ int	execute_redirections(t_tokenizer *tokens)
 			fd = tokens->next->redirect.file_fd;
 			if (fd < 0)
 				fd = open_redir_fd(tokens);
+			if (here_d_case(fd, tokens))
+				return (1);
 			if (handle_fd(fd, STDIN_FILENO, tokens->next->str))
 				return (1);
 		}
