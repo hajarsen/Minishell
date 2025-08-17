@@ -90,7 +90,8 @@ static int	error_message(int i, char *input, t_tokenizer *token)
 	if (i == 1)
 	{
 		free_tokens(input, token);
-		ft_putstr_fd("Minishell: syntax error near unexpectedtoken \'newline\'\n", 2);
+		ft_putstr_fd("Minishell: syntax error near ", 2);
+		ft_putstr_fd("unexpectedtoken \'newline\'\n", 2);
 		glb_list()->exit_status = 2;
 		return (1);
 	}

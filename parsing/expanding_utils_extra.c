@@ -90,12 +90,12 @@ int	expand_nq(t_tokenizer **token, int *i)
 	{
 		if (remove_dollar_quote(token, i) == 0)
 			return (0);
-		if (valid_expanding((*token)->str + *i, &len))
+		if (valid_expanding((*token)->str + *i, &len)
+			&& (*token)->red_case != DO_NOT_EXPAND)
 		{
 			env_value = check_env(ft_substr((*token)->str, *i + 1, len - 1),
 					&check);
-			if (check == 1 && env_value != NULL
-				&& (*token)->red_case != DO_NOT_EXPAND)
+			if (check == 1 && env_value != NULL)
 				env_value = modify_envar_for_nq(env_value);
 			(*token)->str = re_alloc((*token)->str, i, len, env_value);
 			if_expand_null(token, *token);

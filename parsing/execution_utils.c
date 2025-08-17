@@ -33,7 +33,6 @@ void	execute_child_process(char **args, t_tokenizer *tokens)
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-
 	if (execute_redirections(tokens))
 		exit(1);
 	if (execute_builtin(args, &glb_list()->env, &glb_list()->exit_status) == 1)
@@ -53,6 +52,8 @@ void	execute_child_process(char **args, t_tokenizer *tokens)
 
 void	handle_parent_process_main(pid_t pid, int *exit_status)
 {
+	int	sig;
+
 	if (pid > 0)
 	{
 		signal(SIGINT, SIG_IGN);
@@ -63,7 +64,7 @@ void	handle_parent_process_main(pid_t pid, int *exit_status)
 			glb_list()->exit_status = WEXITSTATUS(*exit_status);
 		else if (WIFSIGNALED(*exit_status))
 		{
-			int sig = WTERMSIG(*exit_status);
+			WTERMSIG(*exit_status);
 			if (sig == SIGINT)
 				ft_putstr_fd("\n", STDOUT_FILENO);
 			else if (sig == SIGQUIT)
