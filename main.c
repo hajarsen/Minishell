@@ -53,6 +53,7 @@ static void	parsing(char *input)
 	close_redirection_fds(tokens);
 	free_args(args);
 	free_tokens(input, tokens);
+	//gc_free_all();
 }
 
 int	main(int ac, char **av, char **env)

@@ -5,13 +5,13 @@ SRC = main.c parsing/env_var.c parsing/free.c parsing/tokenizer.c parsing/tokeni
 	exec/heredoc_expansion.c exec/heredoc_expansion_utils.c exec/execute_redirections.c exec/signals_handlers.c exec/signals_setup.c exec/exec_builtins.c\
 	builtins/exit.c builtins/exit_utils.c builtins/export.c builtins/export_utils.c builtins/pwd.c builtins/unset.c exec/pipes_cleanup_utils.c\
     env_var/env_init.c env_var/env_update.c env_var/env_utils.c env_var/env_utils1.c exec/args_utils.c  exec/exec_command.c exec/exec_command_utils.c exec/pipes.c\
-	exec/pipes_init.c exec/pipes_cleanup.c exec/pipes_helpers.c exec/pipes_exec.c
+	exec/pipes_init.c exec/pipes_cleanup.c exec/pipes_helpers.c exec/pipes_exec.c exec/pipes_exec_utils.c
 NAME = minishell
 HEADER = includes/minishell.h
 OBJ = ${SRC:.c=.o}
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Iincludes
+CFLAGS = -Wall -Wextra -Werror -Iincludes 
 
 LIB_DIR = libft
 LIB_FILE = libft.a

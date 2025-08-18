@@ -31,7 +31,7 @@ NAME = libft.a
 LIBC = ar rcs
 RM = rm -f
 CC = gcc 
-WFLAGS = -Wall -Wextra -Werror -Iincludes
+WFLAGS = -Wall -Wextra -Werror -Iincludes 
 
 all: ${NAME}
 
