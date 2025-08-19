@@ -60,5 +60,6 @@ int	process_heredoc_line(t_tokenizer *token, t_env *env, int write_fd,
 	{
 		return (-1);
 	}
+	free(line);
 	return (0);
 }
