@@ -40,6 +40,15 @@ int	handle_redirection_error(t_tokenizer *token, t_tokenizer *start)
 {
 	if (token->op != LESS_LESS)
 	{
+		if (token->op == LESS)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(token->next->str, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			glb_list()->exit_status = 1;
+			close_redirection_fds(start);
+			return (1);
+		}
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(token->next->str, 2);
 		ft_putstr_fd(": Permission denied\n", 2);

@@ -42,7 +42,7 @@ static int	handle_fd(int fd, int std_fd, char *filename)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(filename, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
+		ft_putstr_fd(": Permission denied\n", 2);
 		return (1);
 	}
 	if (dup2(fd, std_fd) < 0)
