@@ -61,6 +61,10 @@ static int	change_directory_and_update(t_env **env_list, const char *path)
 	char	*old_pwd;
 
 	old_pwd = get_env_value("PWD", *env_list);
+	if (!path || ft_strlen(path) == 0)
+	{
+		return (0);
+	}
 	if (chdir(path) != 0)
 	{
 		print_cd_error(path);
