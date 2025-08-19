@@ -75,12 +75,25 @@ int	quote_handling(t_tokenizer *token)
 void	dont_expand_herdoc(t_tokenizer *tokens)
 {
 	t_tokenizer	*temp;
+	int			i;
 
+	i = 0;
 	temp = tokens;
 	while (temp != NULL)
 	{
 		if (temp != NULL && temp->op == LESS_LESS && temp->next != NULL)
+		{
 			temp->next->red_case = DO_NOT_EXPAND;
+			while (temp->next->str[i])
+			{
+				if (is_quote(temp->next->str[i]))
+				{
+					temp->next->red_eof_quote = QUOTE_IN_EOF;
+					break ;
+				}
+				i++;
+			}
+		}
 		temp = temp->next;
 	}
 }

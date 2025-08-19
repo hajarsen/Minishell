@@ -48,6 +48,7 @@ typedef enum e_operator
 	ENV_CASE,
 	ITS_NULL_EXPAND,
 	DO_NOT_EXPAND,
+	QUOTE_IN_EOF,
 }				t_operator;
 
 typedef enum e_quote
@@ -95,6 +96,7 @@ typedef struct s_tokenizer
 	t_here_doc			*hd;
 	t_redirections		redirect;
 	t_operator			red_case;
+	t_operator			red_eof_quote;
 	struct s_tokenizer	*next;
 }				t_tokenizer;
 

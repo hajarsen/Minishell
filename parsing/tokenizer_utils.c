@@ -79,6 +79,7 @@ void	fill_the_node_str(t_tokenizer *node, int i, char *token)
 	node->env_list = NULL;
 	node->redirect = (t_redirections){0};
 	node->red_case = NOT_OP;
+	node->red_eof_quote = NOT_OP;
 }
 
 char	is_quote(char c)
