@@ -26,7 +26,7 @@ static void	print_env_error(char *var)
 {
 	ft_putstr_fd("env: ", STDERR_FILENO);
 	ft_putstr_fd(var, STDERR_FILENO);
-	ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+	ft_putendl_fd(": Permission denied", STDERR_FILENO);
 }
 
 static int	print_var_value(t_env *env_list, char *name)

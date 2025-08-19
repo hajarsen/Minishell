@@ -20,7 +20,7 @@ void	handle_command_not_found(char *arg, char *path)
 		{
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(arg, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
+			ft_putstr_fd(": Permission denied\n", 2);
 		}
 		else
 		{
