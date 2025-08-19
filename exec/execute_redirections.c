@@ -36,10 +36,16 @@ static int	open_redir_fd(t_tokenizer *op_tok)
 	return (fd);
 }
 
-static int	handle_fd(int fd, int std_fd, char *filename)
+static int	handle_fd(int fd, int std_fd, char *filename, int op)
 {
+	(void)op;
 	if (fd < 0)
 	{
+		if (op == LESS)
+		{
+			ft_putstr_fd("minishell: No such file or directory\n", 2);
+			return (1);
+		}
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(filename, 2);
 		ft_putstr_fd(": Permission denied\n", 2);
@@ -78,7 +84,7 @@ int	execute_redirections(t_tokenizer *tokens)
 			fd = tokens->next->redirect.file_fd;
 			if (fd < 0)
 				fd = open_redir_fd(tokens);
-			if (handle_fd(fd, STDOUT_FILENO, tokens->next->str))
+			if (handle_fd(fd, STDOUT_FILENO, tokens->next->str, tokens->op))
 				return (1);
 		}
 		else if ((tokens->op == LESS || tokens->op == LESS_LESS))
@@ -88,7 +94,7 @@ int	execute_redirections(t_tokenizer *tokens)
 				fd = open_redir_fd(tokens);
 			if (here_d_case(fd, tokens))
 				return (1);
-			if (handle_fd(fd, STDIN_FILENO, tokens->next->str))
+			if (handle_fd(fd, STDIN_FILENO, tokens->next->str, tokens->op))
 				return (1);
 		}
 		tokens = tokens->next;
