@@ -48,7 +48,13 @@ static int	handle_fork_and_child(t_tokenizer *token, t_env *env, int *pipefd)
 	ret = read_and_write_heredoc(token, env, pipefd[1]);
 	close(pipefd[1]);
 	if (ret == -1)
+	{
+		gc_free_all();
+		free_env(glb_list()->env);
 		exit(1);
+	}
+	gc_free_all();
+	free_env(glb_list()->env);
 	exit(0);
 }
 

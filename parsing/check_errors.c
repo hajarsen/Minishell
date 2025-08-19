@@ -54,7 +54,6 @@ static int	only_spaces_tabs(char *input)
 		}
 		i++;
 	}
-	free(input);
 	return (1);
 }
 
@@ -63,13 +62,15 @@ int	check_input_errors(char *input)
 	if (!input)
 	{
 		printf("exit\n");
-		free_env(glb_list()->env);
 		rl_clear_history();
+		gc_free_all();
+		free_env(glb_list()->env);
 		exit(glb_list()->exit_status);
+		return (1);
 	}
 	if (ft_strlen(input) == 0)
 	{
-		free(input);
+		// free(input);
 		return (1);
 	}
 	if (only_spaces_tabs(input))
@@ -78,8 +79,8 @@ int	check_input_errors(char *input)
 	{
 		glb_list()->exit_status = 2;
 		add_history(input);
-		free(input);
-		return (1);
+		// free(input);
+			return (1);
 	}
 	add_history(input);
 	return (0);
@@ -87,9 +88,12 @@ int	check_input_errors(char *input)
 
 static int	error_message(int i, char *input, t_tokenizer *token)
 {
+	(void)input;
+	(void)token;
 	if (i == 1)
 	{
-		free_tokens(input, token);
+		// free_tokens(input, token);
+		gc_free_all();
 		ft_putstr_fd("Minishell: syntax error near ", 2);
 		ft_putstr_fd("unexpectedtoken \'newline\'\n", 2);
 		glb_list()->exit_status = 2;
@@ -97,14 +101,16 @@ static int	error_message(int i, char *input, t_tokenizer *token)
 	}
 	if (i == 2)
 	{
-		free_tokens(input, token);
+		// free_tokens(input, token);
+		gc_free_all();
 		ft_putstr_fd("Minishell: syntax error near unexpected token `|'\n", 2);
 		glb_list()->exit_status = 2;
 		return (1);
 	}
 	if (i == 3)
 	{
-		free_tokens(input, token);
+		// free_tokens(input, token);
+		gc_free_all();
 		ft_putstr_fd("Minishell: syntax error near unexpected token\n", 2);
 		glb_list()->exit_status = 2;
 		return (1);

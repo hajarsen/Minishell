@@ -35,6 +35,8 @@ static void	exit_num_error(char *arg)
 	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	ft_putstr_fd(arg, STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+	gc_free_all();
+	free_env(glb_list()->env);
 	exit(2);
 }
 
@@ -62,7 +64,11 @@ void	ft_exit(char **args)
 		exit_code = my_ft_atoll(args[1], &overflow);
 		if (overflow)
 			exit_num_error(args[1]);
+		gc_free_all();
+		free_env(glb_list()->env);
 		exit((unsigned char)exit_code);
 	}
+	gc_free_all();
+	free_env(glb_list()->env);
 	exit(glb_list()->exit_status);
 }

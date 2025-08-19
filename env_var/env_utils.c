@@ -26,7 +26,7 @@ t_env	*create_env_node(char *name, char *value)
 {
 	t_env	*new;
 
-	new = gc_alloc(sizeof(t_env));
+	new = malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
 	new->name = name;
@@ -38,7 +38,12 @@ t_env	*create_env_node(char *name, char *value)
 void	insert_env_node(t_env **env_list, t_env *new_node)
 {
 	if (update_env_var(*env_list, new_node))
+	{
+		free(new_node->name);
+		free(new_node->value);
+		free(new_node);
 		return ;
+	}
 	if (!*env_list || ft_strcmp(new_node->name, (*env_list)->name) < 0)
 	{
 		new_node->next = *env_list;
@@ -70,8 +75,11 @@ void	free_env(t_env *env)
 	{
 		tmp = env->next;
 		free(env->name);
+		env->name = NULL;
 		free(env->value);
+		env->value = NULL;
 		free(env);
+		env = NULL;
 		env = tmp;
 	}
 }

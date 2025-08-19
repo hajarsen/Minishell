@@ -24,7 +24,7 @@ char	*str_concat_three(const char *a, const char *b, const char *c)
 	len_a = ft_strlen(a);
 	len_b = ft_strlen(b);
 	len_c = ft_strlen(c);
-	joined = malloc(len_a + len_b + len_c + 1);
+	joined = gc_alloc(len_a + len_b + len_c + 1);
 	if (!joined)
 		return (NULL);
 	ft_memcpy(joined, a, len_a);
@@ -77,7 +77,7 @@ char	**envlist_to_array(t_env *env_list)
 		return (NULL);
 	if (fill_env_array(env_arr, env_list) == -1)
 	{
-		free(env_arr);
+		// free(env_arr);
 		return (NULL);
 	}
 	return (env_arr);

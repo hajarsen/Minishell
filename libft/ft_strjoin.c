@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "../includes/minishell.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
@@ -23,7 +24,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (0);
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
-	ptr = malloc(s1_len + s2_len + 1);
+	ptr = gc_alloc(s1_len + s2_len + 1);
 	if (!ptr)
 		return (0);
 	i = -1;

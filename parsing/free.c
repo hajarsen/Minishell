@@ -42,6 +42,5 @@ void	free_tokens(char *input, t_tokenizer *tokens)
 		free(temp);
 		temp = NULL;
 	}
-	free(input);
-	input = NULL;
+	(void)input;
 }

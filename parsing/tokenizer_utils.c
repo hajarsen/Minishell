@@ -59,6 +59,11 @@ void	fill_the_node_op(t_tokenizer *node, int op, int i)
 	node->next = NULL;
 	node->quotes_index = NULL;
 	node->hd = NULL;
+	node->quote_state = 0;
+	node->env_case = NOT_OP;
+	node->env_list = NULL;
+	node->redirect = (t_redirections){0};
+	node->red_case = NOT_OP;
 }
 
 void	fill_the_node_str(t_tokenizer *node, int i, char *token)
@@ -69,6 +74,11 @@ void	fill_the_node_str(t_tokenizer *node, int i, char *token)
 	node->next = NULL;
 	node->quotes_index = NULL;
 	node->hd = NULL;
+	node->quote_state = 0;
+	node->env_case = NOT_OP;
+	node->env_list = NULL;
+	node->redirect = (t_redirections){0};
+	node->red_case = NOT_OP;
 }
 
 char	is_quote(char c)

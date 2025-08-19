@@ -48,7 +48,7 @@ char	*modify_envar_for_nq(char *str)
 
 	len = ft_strlen(str);
 	new_len = len * 3;
-	result = malloc(new_len + 1);
+	result = gc_alloc(new_len + 1);
 	if (!result)
 		return (NULL);
 	quote_quotes(result, str, len);
@@ -75,23 +75,23 @@ int	remove_dollar_quote(t_tokenizer **token, int *i)
 
 void	free_str_and_itoa(char *temp_itoi, char *str)
 {
-	free(str);
-	free(temp_itoi);
+	(void)temp_itoi;
+	(void)str;
 }
 
 void	if_expand_null(t_tokenizer **token, t_tokenizer *current)
 {
-	t_tokenizer	*to_remove;
+	// t_tokenizer	*to_remove;
 
 	if (current != NULL && current->op == NOT_OP
 		&& current->str != NULL && current->str[0] == '\0')
 	{
 		if (current->next != NULL)
 		{
-			to_remove = current;
+			// to_remove = current;
 			*token = current->next;
-			free(to_remove->str);
-			free(to_remove);
+			// free(to_remove->str);
+			// free(to_remove);
 		}
 		else
 		{

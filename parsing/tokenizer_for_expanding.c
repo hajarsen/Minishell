@@ -17,6 +17,8 @@ static t_tokenizer	*add_node(t_tokenizer **node)
 	*node = gc_alloc(sizeof(t_tokenizer));
 	if (*node == NULL)
 	{
+		gc_free_all();
+		free_env(glb_list()->env);
 		exit(0);
 	}
 	(*node)->next = NULL;
@@ -88,7 +90,7 @@ t_tokenizer	*tokenizer_for_expanding(char *input)
 	}
 	node = head;
 	head = head->next;
-	free(node);
+	// free(node);
 	return (head);
 }
 

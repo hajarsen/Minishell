@@ -34,9 +34,17 @@ void	execute_child_process(char **args, t_tokenizer *tokens)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (execute_redirections(tokens))
+	{
+		gc_free_all();
+		free_env(glb_list()->env);
 		exit(1);
+	}
 	if (execute_builtin(args, &glb_list()->env, &glb_list()->exit_status) == 1)
+	{
+		gc_free_all();
+		free_env(glb_list()->env);
 		exit(glb_list()->exit_status);
+	}
 	path = get_cmd_path(args[0], glb_list()->env);
 	handle_command_not_found(args[0], path);
 	handle_directory_error(args[0], path);
@@ -44,7 +52,9 @@ void	execute_child_process(char **args, t_tokenizer *tokens)
 	if (!envp)
 	{
 		perror("envlist_to_array");
-		free(path);
+		// free(path);
+		gc_free_all();
+		free_env(glb_list()->env);
 		exit(1);
 	}
 	handle_execve_error_for_main(args, path, envp);

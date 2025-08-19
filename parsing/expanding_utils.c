@@ -32,12 +32,10 @@ char	*check_env(char *str, int *check)
 	{
 		if (ft_strncmp(str, env->name, ft_strlen(env->name) + 1) == 0)
 		{
-			free(str);
 			return (env->value);
 		}
 		env = env->next;
 	}
-	free(str);
 	return (NULL);
 }
 
@@ -76,7 +74,6 @@ char	*re_alloc(char *str, int *start, int len, char *env_value)
 		return (str);
 	}
 	new_str = new_alloc(str, env_value, start, len);
-	free(str);
 	return (new_str);
 }
 
@@ -107,15 +104,15 @@ void	tokenize_the_envar(t_tokenizer **token)
 {
 	t_tokenizer	**token_temp;
 	t_tokenizer	*token_next;
-	t_tokenizer	*token_dele;
-	char		*str;
+	// t_tokenizer	*token_dele;
+	// char		*str;
 
-	token_dele = *token;
-	str = (*token)->str;
+	// token_dele = *token;
+	// str = (*token)->str;
 	token_next = (*token)->next;
 	*token = tokenizer_for_expanding((*token)->str);
-	free(str);
-	free(token_dele);
+	// free(str);
+	// free(token_dele);
 	token_temp = token;
 	while ((*token_temp) != NULL)
 	{

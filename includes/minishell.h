@@ -157,6 +157,9 @@ void		free_tokens(char *input, t_tokenizer *tokens);
 void		free_env(t_env *env);
 void		init_env_var(t_env **env_list, char **envp);
 t_env		*save_env(char **env);
+char		*ft_substr_(char const *s, unsigned int start, size_t len);
+char		*ft_strdup_(const char *s);
+char		*ft_itoa_(int n);
 int			check_input_errors(char *input);
 void		free_str_and_itoa(char *temp_itoi, char *str);
 

@@ -44,16 +44,20 @@ static void	parsing(char *input)
 	set_signal_handler(tokens);
 	init_redirect_fds(tokens);
 	if (has_pipe(tokens, input, &exit_status))
+	{
+		gc_free_all();
 		return ;
+	}
 	if (redirection_infos(tokens, input))
+	{
+		gc_free_all();
 		return ;
+	}
 	args = tokens_to_args(tokens);
 	if (args && args[0] && tokens->op != ITS_NULL_EXPAND)
 		execution(args, tokens);
 	close_redirection_fds(tokens);
-	free_args(args);
-	free_tokens(input, tokens);
-	//gc_free_all();
+	gc_free_all();
 }
 
 int	main(int ac, char **av, char **env)
@@ -71,7 +75,9 @@ int	main(int ac, char **av, char **env)
 		input = readline("\033[1;32m➜\033[0m\033[1;36m Minishell $> \033[0m");
 		glb_list()->input = input;
 		parsing(input);
+		free(input);
 	}
 	gc_free_all();
+	free_env(glb_list()->env);
 	return (glb_list()->exit_status);
 }

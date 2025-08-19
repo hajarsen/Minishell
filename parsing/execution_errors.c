@@ -24,11 +24,13 @@ void	handle_command_not_found(char *arg, char *path)
 		}
 		else
 		{
-			ft_putstr_fd("minishell: command not found: ", 2);
+			ft_putstr_fd("minishell: command not foundd: ", 2);
 			ft_putstr_fd(arg, 2);
 			ft_putchar_fd('\n', 2);
 		}
 		glb_list()->exit_status = 127;
+		gc_free_all();
+		free_env(glb_list()->env);
 		exit(127);
 	}
 }
@@ -42,7 +44,9 @@ void	handle_directory_error(char *cmd_name, char *path)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd_name, 2);
 		ft_putstr_fd(": Is a directory\n", 2);
-		free(path);
+		gc_free_all();//
+		free_env(glb_list()->env);
+		// free(path);
 		exit(126);
 	}
 }
@@ -54,8 +58,9 @@ void	handle_execve_error_for_main(char **args, char *path, char **envp)
 		ft_putstr_fd("minishell:", 2);
 		ft_putstr_fd(args[0], 2);
 		ft_putstr_fd(":command execution failed \n", 2);
-		free(path);
-		free_strs(envp);
+		// free(path);
+		gc_free_all();
+		free_env(glb_list()->env);
 		exit(126);
 	}
 }

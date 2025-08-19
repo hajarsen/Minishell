@@ -12,6 +12,7 @@
 
 #include "libft.h"
 #include <stdio.h>
+#include "../includes/minishell.h"
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -24,9 +25,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (start >= ft_strlen(s))
 		return (ft_calloc(1, sizeof(char)));
 	if (ft_strlen(s) <= len - start)
-		ptr = malloc(ft_strlen(s) - start + 1);
+		ptr = gc_alloc(ft_strlen(s) - start + 1);
 	else
-		ptr = malloc(len + 1);
+		ptr = gc_alloc(len + 1);
 	if (!ptr)
 		return (0);
 	while (i < len && s[start + i])

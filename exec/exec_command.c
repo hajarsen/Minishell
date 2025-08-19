@@ -26,7 +26,7 @@ static char	*find_in_paths(char **paths, char *cmd)
 		{
 			return (full_path);
 		}
-		free(full_path);
+		// free(full_path);
 		i++;
 	}
 	return (NULL);

@@ -14,11 +14,13 @@
 
 static void	handle_execve_error(char **args, char *path)
 {
+	(void)path;
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(args[0], 2);
 	ft_putstr_fd(": Permission denied\n", 2);
-	free(path);
+	// free(path);
 	free_strs(envlist_to_array(NULL));
+	gc_free_all();
 	exit(126);
 }
 
@@ -30,7 +32,9 @@ void	perform_execve(char **args, char *path, t_env *env)
 	if (!envp)
 	{
 		ft_putendl_fd("minishell: envlist_to_array failed", 2);
-		free(path);
+		// free(path);
+		gc_free_all();
+		free_env(glb_list()->env);
 		exit(1);
 	}
 	execve(path, args, envp);
@@ -48,11 +52,11 @@ int	has_pipe(t_tokenizer *tokens, char *input, int *exit_status)
 		{
 			execute_pipeline(tmp, glb_list(), exit_status);
 			close_redirection_fds(tmp);
-			free_tokens(input, tmp);
 			return (1);
 		}
 		tokens = tokens->next;
 	}
+	(void)input;
 	return (0);
 }
 

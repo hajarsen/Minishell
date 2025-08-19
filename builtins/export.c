@@ -39,12 +39,12 @@ static void	get_name_value(char *arg, char **name, char **value)
 	eq = ft_strchr(arg, '=');
 	if (eq)
 	{
-		*name = ft_substr(arg, 0, eq - arg);
-		*value = ft_strdup(eq + 1);
+		*name = ft_substr_(arg, 0, eq - arg);
+		*value = ft_strdup_(eq + 1);
 	}
 	else
 	{
-		*name = ft_strdup(arg);
+		*name = ft_strdup_(arg);
 		*value = NULL;
 	}
 }

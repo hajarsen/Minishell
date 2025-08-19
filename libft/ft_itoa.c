@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "../includes/minishell.h"
 
 static int	digit_nbr(int n)
 {
@@ -49,14 +50,14 @@ char	*ft_itoa(int n)
 	if (l < 0)
 	{
 		number_of_chars++;
-		ptr = malloc(number_of_chars + 1);
+		ptr = gc_alloc(number_of_chars + 1);
 		if (!ptr)
 			return (0);
 		ptr[0] = '-';
 		l *= -1;
 	}
 	else
-		ptr = malloc(number_of_chars + 1);
+		ptr = gc_alloc(number_of_chars + 1);
 	if (!ptr)
 		return (0);
 	to_char(ptr, l, number_of_chars);

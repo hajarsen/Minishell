@@ -47,5 +47,4 @@ void	print_minishell_err(const char *cmd, const char *msg)
 	buf[pos] = '\n';
 	buf[pos + 1] = '\0';
 	write(2, buf, pos + 1);
-	free(buf);
 }

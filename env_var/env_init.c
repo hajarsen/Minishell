@@ -22,15 +22,15 @@ static void	extract_and_push(t_env **env_list, char *env_var)
 	equal = ft_strchr(env_var, '=');
 	if (!equal)
 	{
-		name = ft_strdup(env_var);
+		name = ft_strdup_(env_var);
 		if (!name)
 			return ;
 		new_node = create_env_node(name, NULL);
 	}
 	else
 	{
-		name = ft_substr(env_var, 0, equal - env_var);
-		value = ft_strdup(equal + 1);
+		name = ft_substr_(env_var, 0, equal - env_var);
+		value = ft_strdup_(equal + 1);
 		if (!name || (equal[1] && !value))
 			return ;
 		new_node = create_env_node(name, value);

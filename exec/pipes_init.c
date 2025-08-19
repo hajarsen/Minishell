@@ -14,7 +14,7 @@
 
 int	alloc_pids(pid_t **pids, int nseg)
 {
-	*pids = (pid_t *)malloc(sizeof(pid_t) * nseg);
+	*pids = (pid_t *)gc_alloc(sizeof(pid_t) * nseg);
 	if (!*pids)
 	{
 		ft_putendl_fd("minishell: malloc failed", 2);
@@ -31,7 +31,7 @@ int	create_pipes(int nseg, int (**out_pfds)[2])
 	*out_pfds = NULL;
 	if (nseg <= 1)
 		return (0);
-	pfds = (int (*)[2])malloc(sizeof (int [2]) * (nseg - 1));
+	pfds = (int (*)[2])gc_alloc(sizeof (int [2]) * (nseg - 1));
 	if (!pfds)
 	{
 		ft_putstr_fd("minishell: malloc failed\n", 2);

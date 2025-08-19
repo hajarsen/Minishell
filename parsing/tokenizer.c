@@ -17,7 +17,7 @@ static t_tokenizer	*add_node(t_tokenizer **node)
 	*node = gc_alloc(sizeof(t_tokenizer));
 	if (*node == NULL)
 	{
-		exit(0);
+		return (NULL);
 	}
 	(*node)->next = NULL;
 	return (*node);
@@ -59,6 +59,8 @@ static int	alloc_str(char *input, int *i, t_tokenizer **node, int *node_i)
 	if (end == 0)
 		return (*i);
 	*node = add_node(&((*node)->next));
+	if (!*node)
+		return (*i);
 	to_alloc = ft_substr(input, *i, end);
 	fill_the_node_str(*node, *node_i, to_alloc);
 	*i = *i + end;
@@ -77,6 +79,8 @@ static int	alloc_operator(int	*i, char *input, t_tokenizer **token
 	if (op < QUOTE)
 	{
 		*token = add_node(&((*token)->next));
+		if (!*token)
+			return (*i);
 		fill_the_node_op(*token, op, *node_i);
 		if (op < LESS)
 			*i += 1;
@@ -95,6 +99,8 @@ t_tokenizer	*tokenizer(char *input)
 	i = 0;
 	node_i = 0;
 	head = add_node(&node);
+	if (!head)
+		return (NULL);
 	while (input[i])
 	{
 		if (input[i] == ' ')
@@ -110,6 +116,5 @@ t_tokenizer	*tokenizer(char *input)
 	}
 	node = head;
 	head = head->next;
-	free(node);
 	return (head);
 }
