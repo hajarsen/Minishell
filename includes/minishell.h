@@ -162,7 +162,7 @@ char		*ft_strdup_(const char *s);
 char		*ft_itoa_(int n);
 int			check_input_errors(char *input);
 void		free_str_and_itoa(char *temp_itoi, char *str);
-
+void		clean_exit(int i);
 /* TOKENIZER */
 
 t_tokenizer	*tokenizer(char *input);
@@ -190,12 +190,9 @@ int			remove_dollar_quote(t_tokenizer **token, int *i);
 char		*modify_envar_for_nq(char *str);
 void		quote_quotes(char *result, char *str, int len);
 void		if_expand_null(t_tokenizer **token, t_tokenizer *current);
-/* AST_ PASRER */
-t_ast		*ast_builder(t_tokenizer *token);
-
 /* ERRORS */
 int			input_error(char *input);
-int			check_parsing_errors(t_tokenizer *token, char *input);
+int			check_parsing_errors(t_tokenizer *token);
 void		handle_execve_error_for_main(char **args,
 				char *path, char **envp);
 void		handle_directory_error(char *cmd_name, char *path);

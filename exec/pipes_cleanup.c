@@ -32,7 +32,6 @@ void	cleanup_pipes(int (*pfds)[2], int count)
 		close(pfds[count][READING_END]);
 		close(pfds[count][WRITING_END]);
 	}
-	// free(pfds);
 }
 
 void	free_pipes(int (*pfds)[2], int n_pipes)
@@ -40,7 +39,6 @@ void	free_pipes(int (*pfds)[2], int n_pipes)
 	if (!pfds)
 		return ;
 	close_all_pipes(pfds, n_pipes);
-	// free(pfds);
 }
 
 void	wait_children(pid_t *pids, int nseg, int *last_status)
@@ -69,5 +67,4 @@ void	cleanup_pipeline(t_pipe_data *pipe_data, int *last_status)
 {
 	free_pipes(pipe_data->pfds, pipe_data->nseg - 1);
 	wait_children(pipe_data->pids, pipe_data->nseg, last_status);
-	// free(pipe_data->pids);
 }

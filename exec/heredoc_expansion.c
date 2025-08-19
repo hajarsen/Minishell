@@ -44,7 +44,6 @@ static char	*expand_name_var(const char *p, size_t *consumed, t_env *env)
 		i++;
 	name = ft_substr(p, 1, i - 1);
 	val = get_env_value(name, env);
-	// free(name);
 	if (val)
 		ret = ft_strdup(val);
 	else
@@ -68,9 +67,6 @@ static char	*join_and_free(char *out, char *frag)
 	char	*tmp;
 
 	tmp = ft_strjoin(out, frag);
-	// something wrong here
-	// free(out);
-	// free(frag);
 	return (tmp);
 }
 

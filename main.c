@@ -37,7 +37,7 @@ static void	parsing(char *input)
 	if (check_input_errors(input))
 		return ;
 	tokens = tokenizer(input);
-	if (check_parsing_errors(tokens, input))
+	if (check_parsing_errors(tokens))
 		return ;
 	dont_expand_herdoc(tokens);
 	expanding(&tokens);
@@ -49,10 +49,7 @@ static void	parsing(char *input)
 		return ;
 	}
 	if (redirection_infos(tokens, input))
-	{
-		gc_free_all();
 		return ;
-	}
 	args = tokens_to_args(tokens);
 	if (args && args[0] && tokens->op != ITS_NULL_EXPAND)
 		execution(args, tokens);

@@ -22,27 +22,18 @@ static void	exec_resolved_command(char **args, t_glb *glb, int *exit_status)
 	{
 		is_blt = execute_builtin(args, &glb->env, exit_status);
 		if (is_blt)
-		{
-			gc_free_all();//added
-			free_env(glb_list()->env);
-			exit(*exit_status);
-		}
+			clean_exit(*exit_status);
 	}
 	path = get_cmd_path(args[0], glb->env);
 	if (!path)
 	{
 		print_minishell_err(args[0], "command not found");
-		gc_free_all();
-		free_env(glb_list()->env);
-		exit(127);//shold free
+		clean_exit(127);
 	}
 	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
 	{
 		print_minishell_err(args[0], "Is a directory");
-		// free(path);
-		gc_free_all();
-		free_env(glb_list()->env);
-		exit(126);
+		clean_exit(126);
 	}
 	perform_execve(args, path, glb->env);
 }

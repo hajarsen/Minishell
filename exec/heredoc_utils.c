@@ -30,10 +30,8 @@ int	write_line_to_pipe(int write_fd, char *line)
 			1) == -1)
 	{
 		ft_putstr_fd("minishell: write error\n", 2);
-		// free(line);
 		return (-1);
 	}
-	// free(line);
 	return (0);
 }
 

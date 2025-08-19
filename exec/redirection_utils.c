@@ -48,7 +48,7 @@ int	redirection_infos(t_tokenizer *tokens, char *input)
 			has_error = process_redirection_token(tokens, start, env);
 			if (has_error)
 			{
-				// free_tokens(input, tokens);
+				gc_free_all();
 				return (has_error);
 			}
 		}

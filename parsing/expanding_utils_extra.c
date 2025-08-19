@@ -98,10 +98,7 @@ int	expand_nq(t_tokenizer **token, int *i)
 			if (check == 1 && env_value != NULL)
 				env_value = modify_envar_for_nq(env_value);
 			(*token)->str = re_alloc((*token)->str, i, len, env_value);
-			// hadi chof ach kadir rak nsiti
 			if_expand_null(token, *token);
-			// tahadi.
-			// free(env_value);
 			return (1);
 		}
 	}

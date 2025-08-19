@@ -105,10 +105,8 @@ int	ft_cd(char **args, t_env **env_list)
 			return (1);
 		if (change_directory_and_update(env_list, target))
 		{
-			// free(target);
 			return (1);
 		}
-		// free(target);
 		return (0);
 	}
 	if (args[2])

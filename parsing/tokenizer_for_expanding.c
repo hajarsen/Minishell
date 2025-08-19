@@ -90,7 +90,6 @@ t_tokenizer	*tokenizer_for_expanding(char *input)
 	}
 	node = head;
 	head = head->next;
-	// free(node);
 	return (head);
 }
 

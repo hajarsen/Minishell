@@ -35,6 +35,7 @@ int	update_env_var(t_env *env_list, t_env *new_node)
 	}
 	return (0);
 }
+
 static int	digit_nbr(int n)
 {
 	int	count;
@@ -90,14 +91,14 @@ void	update_shell_lvl(t_env **env_list)
 {
 	char	*shell_lvl;
 	int		lvl;
-	char	*new_lvl_str;
+	char	*n_lv_str;
 
 	shell_lvl = get_env_value("SHLVL", *env_list);
 	lvl = 1;
 	if (shell_lvl)
 		lvl = ft_atoi(shell_lvl) + 1;
-	new_lvl_str = ft_itoa_(lvl);
-	if (!new_lvl_str)
+	n_lv_str = ft_itoa_(lvl);
+	if (!n_lv_str)
 		return ;
-	insert_env_node(env_list, create_env_node(ft_strdup_("SHLVL"), new_lvl_str));
+	insert_env_node(env_list, create_env_node(ft_strdup_("SHLVL"), n_lv_str));
 }

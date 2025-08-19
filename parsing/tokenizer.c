@@ -99,8 +99,6 @@ t_tokenizer	*tokenizer(char *input)
 	i = 0;
 	node_i = 0;
 	head = add_node(&node);
-	if (!head)
-		return (NULL);
 	while (input[i])
 	{
 		if (input[i] == ' ')

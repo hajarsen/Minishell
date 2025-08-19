@@ -77,7 +77,6 @@ char	**envlist_to_array(t_env *env_list)
 		return (NULL);
 	if (fill_env_array(env_arr, env_list) == -1)
 	{
-		// free(env_arr);
 		return (NULL);
 	}
 	return (env_arr);

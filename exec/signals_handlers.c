@@ -47,7 +47,6 @@ static void	handle_heredoc_sigquit(void)
 	ft_putstr_fd("\b\b  \b\b", STDOUT_FILENO);
 	gc_free_all();
 	free_env(glb_list()->env);
-	
 }
 
 void	signal_handler_heredoc(int signum)

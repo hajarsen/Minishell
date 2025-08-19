@@ -104,15 +104,9 @@ void	tokenize_the_envar(t_tokenizer **token)
 {
 	t_tokenizer	**token_temp;
 	t_tokenizer	*token_next;
-	// t_tokenizer	*token_dele;
-	// char		*str;
 
-	// token_dele = *token;
-	// str = (*token)->str;
 	token_next = (*token)->next;
 	*token = tokenizer_for_expanding((*token)->str);
-	// free(str);
-	// free(token_dele);
 	token_temp = token;
 	while ((*token_temp) != NULL)
 	{
