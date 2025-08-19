@@ -50,7 +50,8 @@ void	ft_exit(char **args)
 	long long	exit_code;
 	int			overflow;
 
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	if (!glb_list()->is_pipeline)
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (args[1])
 	{
 		if (!is_numeric_arg(args[1]))

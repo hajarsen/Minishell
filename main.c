@@ -43,9 +43,9 @@ static void	parsing(char *input)
 	expanding(&tokens);
 	set_signal_handler(tokens);
 	init_redirect_fds(tokens);
+	glb_list()->is_pipeline = 0;
 	if (has_pipe(tokens, input, &exit_status))
 	{
-		gc_free_all();
 		return ;
 	}
 	if (redirection_infos(tokens, input))

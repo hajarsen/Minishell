@@ -50,6 +50,7 @@ int	has_pipe(t_tokenizer *tokens, char *input, int *exit_status)
 		{
 			execute_pipeline(tmp, glb_list(), exit_status);
 			close_redirection_fds(tmp);
+			gc_free_all();
 			return (1);
 		}
 		tokens = tokens->next;

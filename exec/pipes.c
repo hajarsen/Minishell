@@ -46,6 +46,7 @@ static void	child_executor(t_pipe_data *pipe_data, int i)
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+	pipe_data->glb->is_pipeline = 1;
 	seg_head = pipe_data->starts[i];
 	seg_tail = pipe_data->ends[i];
 	if (seg_tail)
