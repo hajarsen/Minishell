@@ -52,7 +52,6 @@ int	process_heredoc_line(t_tokenizer *token, t_env *env, int write_fd,
 		if (token->red_eof_quote != QUOTE_IN_EOF)
 		{
 			expanded = expand_heredoc_line(line, env);
-			free(line);
 		}
 	}
 	ret = write_line_to_pipe(write_fd, expanded);
